@@ -1,10 +1,12 @@
+var mongoose = require('mongoose');
 var express = require('express');
 var app = express();
 var session = require('cookie-session');
 var bodyParser = require('body-parser');
 const mongourl = "";
-app.set('view engine', 'ejs');
 
+const mongourl = '';
+app.set('view engine', 'ejs');
 app.use(express.static(__dirname +  '/public'));
 
 var SECRETKEY1 = 'I want to pass COMPS381F';
