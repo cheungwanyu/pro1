@@ -1,11 +1,13 @@
 {
-    "name": "server",
-    "description": "NodeJS app using Google Maps",
-    "author": "Raymond SO <rso@ouhk.edu.hk>",
+    "name": "Project",
+    "description": "Project",
+    "author": "Martin & Marco",
     "version": "0.0.1",
     "dependencies": {
         "express": "*",
-        "ejs": "*"
+        "ejs": "*",
+        "body-parser": "*",
+        "cookie-session": "*"
     },
     "engine": "node >= 0.10.0",
     "scripts": {
