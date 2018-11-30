@@ -17,5 +17,3 @@ var restaurantSchema = mongoose.Schema({
 });
 
 module.exports = restaurantSchema;
-restaurant.js
-Displaying restaurant.js.
