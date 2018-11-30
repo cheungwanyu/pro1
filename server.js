@@ -5,7 +5,6 @@ var session = require('cookie-session');
 var bodyParser = require('body-parser');
 const mongourl = "";
 
-const mongourl = '';
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname +  '/public'));
 
