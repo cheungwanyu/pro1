@@ -8,8 +8,8 @@ const mongourl = "";
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname +  '/public'));
 
-var SECRETKEY1 = 'I want to pass COMPS381F';
-var SECRETKEY2 = 'Keep this to yourself';
+var SECRETKEY1 = 'COMPS381F';
+var SECRETKEY2 = 'Project';
 
 app.use(session({
   name: 'session',
