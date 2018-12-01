@@ -5,6 +5,10 @@ var session = require('cookie-session');
 var bodyParser = require('body-parser');
 const mongourl = "";
 
+//connect the mongoDB
+var MongoClient = require('mongodb').MongoClient;
+var url = "mongodb://admin:ad1234@ds123454.mlab.com:23454/restaurantdb";
+
 
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname +  '/public'));
@@ -44,10 +48,6 @@ app.get('/login',function(req,res) {
 app.post('/login',function(req,res) {
 	
 
-var MongoClient = require('mongodb').MongoClient;
-//Create a database named "mydb":
-var url = "mongodb://admin:ad1234@ds123454.mlab.com:23454/restaurantdb";
-
 MongoClient.connect(url, function(err, db) {
     if (err) throw err;
   var dbo = db.db("restaurantdb");
@@ -57,8 +57,6 @@ MongoClient.connect(url, function(err, db) {
     db.close();
   });
 });
-
-
 
 	
 	for (var i=0; i<users.length; i++) {
