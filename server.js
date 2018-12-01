@@ -107,7 +107,11 @@ app.post('/search',function(req,res) {
 
 /* View Restaurant */
 app.get("/view",function(req,res){
-	
+	var id = req.param('id');//restaurant id
+	res.status(200);
+	res.render('view',{
+		
+	});
 });
 
 app.listen(app.listen(process.env.PORT || 8099));
