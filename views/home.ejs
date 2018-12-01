@@ -22,7 +22,7 @@
 						<td>Name: <%=result[i].name %></td>
 					</tr>
 					<tr>
-						<td><img src="<%=result[i].photo %>"></img></td>
+						<td><img src="<%=result[i].photo %>" height="150" width="200"></img></td>
 					</tr>
 					<tr>
 						<td>Borough: <%=result[i].borough %></td>
@@ -42,33 +42,38 @@
 					<tr>
 						<td>Grades:</td>
 					</tr>
-						<% for(var k=0; k<result[i].grades.length;k++) { %>
+						<% 
+						var checkUserRate=true;
+						for(var k=0; k<result[i].grades.length;k++) { 
+						
+						if(result[i].grades[k].user==user)
+						   checkUserRate= false;
+						%>
 					
 					<tr>
 						<td>User: <%=result[i].grades[k].user %> [ <%=result[i].grades[k].score %> ]</td>
 					</tr>
-					<%} %>
-					
-					<% for(var k=0; k<result[i].grades.length;k++) { %>
-					<tr>
+		
+					<%	} 
+										
+					if(checkUserRate){%>			
+					 <tr>
 				     <td>
-					  <form action="/rate" method="edit">
+					  <form action="/rate" method="post">
 					      <input type="hidden" value=" <%=result[i].restaurant_id %>" name="resId">
-					      <input type="submit" value="Rate" >
-						  
+						  <input type="number"  name="score" min="1" max="10" value="10" required >
+					      <input type="submit" value="Rate" >	  
 				     </form>
 					</tr>
-					<%} %>
-	
-				
+					<%}%>
 				<%	if(result[i].owner==user){%>
 					<tr>		
-					<td><form action="/edit" method="edit"><input type="hidden" value=" <%=result[i].restaurant_id %>" name="resId"><input type="submit" value="Edit" ></form>
-					<form action="/edit" method="Cancel"><input type="hidden" value=" <%=result[i].restaurant_id %>" name="resId"><input type="submit" value="Delete" ></form></td>
+					<td><form action="/edit" method="get"><input type="hidden" value="<%=result[i].restaurant_id %>" name="restaurant_id"><input type="submit" value="Edit" ></form>
+					<form action="/cancel" method="post"><input type="hidden" value="<%=result[i].restaurant_id %>" name="restaurant_id"><input type="submit" value="Delete" ></form></td>
 					</tr>
 				<%}%>
 					
-					
+					<tr><td><hr></td></tr>
 				<% } %>
 			</table>
 		</div>

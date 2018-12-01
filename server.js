@@ -22,6 +22,12 @@ app.use(session({
   keys: [SECRETKEY1,SECRETKEY2]
 }));
 
+
+
+
+
+
+
 /* create User */
 app.get("/createUser",function(req,res){
 	checkAuth(res,req);
@@ -30,19 +36,18 @@ app.get("/createUser",function(req,res){
 });
 
 
-
 /* User Account */
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(express.static('public'));
 
-//var restaurantListRouter = require("./routers/restaurantlist.js");
-//app.use("/view", restaurantListRouter);
 
+
+
+
+
+/* View the restaurant list*/
 app.get('/',function(req,res) {
-	
-	
-	// find the restaurant list from database
 	MongoClient.connect(url, function(err, db) {
   if (err) throw err;
   var dbo = db.db("restaurantdb");
@@ -57,9 +62,56 @@ app.get('/',function(req,res) {
 	
   });
 });
-	
-
 });
+
+
+/* Delete restaurant */
+app.post('/cancel',function(req,res) {
+	MongoClient.connect(url, function(err, db) {
+	 if (err) throw err;
+  var dbo = db.db("restaurantdb");
+   var uplaod = {};
+   uplaod["restaurant_id"] =req.body.restaurant_id;
+   
+   console.log(uplaod);
+ 
+ dbo.collection("Restaurant").remove(uplaod, function(err, obj) {
+    if (err) throw err;
+    
+    db.close();
+	
+	checkAuth(res,req);
+	res.status(200);
+   res.redirect('/');	
+	
+  }); 
+});
+});
+
+
+/* rate restaurant */
+app.post('/cancel',function(req,res) {
+	MongoClient.connect(url, function(err, db) {
+	 if (err) throw err;
+  var dbo = db.db("restaurantdb");
+   var uplaod = {};
+   uplaod["restaurant_id"] =req.body.restaurant_id;
+   
+   console.log(uplaod);
+ 
+ dbo.collection("Restaurant").remove(uplaod, function(err, obj) {
+    if (err) throw err;
+    
+    db.close();
+	
+	checkAuth(res,req);
+	res.status(200);
+   res.redirect('/');	
+	
+  }); 
+});
+});
+
 
 app.get('/login',function(req,res) {
 	res.status(200);
@@ -67,8 +119,6 @@ app.get('/login',function(req,res) {
 });
 
 app.post('/login',function(req,res) {
-	
-
 MongoClient.connect(url, function(err, db) {
     if (err) throw err;
   var dbo = db.db("restaurantdb");
@@ -82,8 +132,7 @@ MongoClient.connect(url, function(err, db) {
 			req.session.username = result.userId;
 			  console.log("result:" + result.userId);
 			  	res.redirect('/');
-		  }
-		  	
+		  }		  	
     db.close();
 	/* Check if user password wrong 
 	if(req.session.authenticated == true){
@@ -95,8 +144,6 @@ MongoClient.connect(url, function(err, db) {
 */
   });
 });
-
-
 });
 
 app.get('/logout',function(req,res) {
