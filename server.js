@@ -6,6 +6,7 @@ var bodyParser = require('body-parser');
 const mongourl = "";
 
 //connect the mongoDB
+var assert = require("assert");
 var MongoClient = require('mongodb').MongoClient;
 var url = "mongodb://admin:ad1234@ds123454.mlab.com:23454/restaurantdb";
 
@@ -52,25 +53,17 @@ MongoClient.connect(url, function(err, db) {
     if (err) throw err;
   var dbo = db.db("restaurantdb");
   var Data = req.body;
+  // check the user account
   dbo.collection("User").findOne(Data, function(err, result) {
 	  assert.equal(err, null);
-	      if (result !== null) {
-			  console.log("result:" + result);
+	    if (result !== null) {
+			
 			  req.session.authenticated = true;
 			req.session.username = result.userId;
+			  console.log("result:" + result.userId);
 		  }
+		  	
     db.close();
-  });
-});
-
-	
-	for (var i=0; i<users.length; i++) {
-		if (users[i].name == req.body.name &&
-		    users[i].password == req.body.password) {
-			req.session.authenticated = true;
-			req.session.username = users[i].name;
-		}
-	}
 	/* Check if user password wrong */
 	if(req.session.authenticated == true){
 		res.redirect('/');
@@ -78,6 +71,11 @@ MongoClient.connect(url, function(err, db) {
 		res.status(200);
 		res.render('login',{err:"User Name or Passsword Wrong!"});
 	}
+
+  });
+});
+
+
 });
 
 app.get('/logout',function(req,res) {
