@@ -7,14 +7,14 @@ var cookieParser = require("cookie-parser");
 var MongoClient = require('mongodb').MongoClient;
 
 //set the MongoDb path
-var url = require("url");
-var router = express.Router();
-var assert = require("assert");
-router.use(
-  expressMongoDb(
-	"mongodb://admin:ad1234@ds123454.mlab.com:23454/restaurantdb"
-  )
-);
+// var url = require("url");
+// var router = express.Router();
+// var assert = require("assert");
+// router.use(
+  // expressMongoDb(
+	// "mongodb://admin:ad1234@ds123454.mlab.com:23454/restaurantdb"
+  // )
+// );
 ///
 
 app.set('view engine', 'ejs');
@@ -85,7 +85,7 @@ app.post('/login',function(req,res) {
     assert.equal(err, null);
 	});
 
-		 res.end("======"+result +"===="));
+		 res.end("======"+result +"====");
 	}
 });
 
