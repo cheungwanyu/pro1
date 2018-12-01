@@ -44,19 +44,18 @@ app.get('/login',function(req,res) {
 app.post('/login',function(req,res) {
 	
 	
-	var MongoClient = require('mongodb').MongoClient;
+var MongoClient = require('mongodb').MongoClient;
+//Create a database named "mydb":
 var url = "mongodb://<dbuser>:<dbpassword>@ds123454.mlab.com:23454/restaurantdb";
 
 MongoClient.connect(url, function(err, db) {
-  if (err) throw err;
-  var dbo = db.db("mydb");
-  //Find the first document in the customers collection:
-  dbo.collection("customers").findOne({}, function(err, result) {
-    if (err) throw err;
-    console.log(result.name);
-    db.close();
-  });
+  if (err) throw err;
+  console.log("Database created!");
+  db.close();
 });
+
+
+
 	
 	for (var i=0; i<users.length; i++) {
 		if (users[i].name == req.body.name &&
