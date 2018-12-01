@@ -32,8 +32,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(express.static('public'));
 
-var restaurantListRouter = require("./routers/restaurantlist.js");
-app.use("/view", restaurantListRouter);
+//var restaurantListRouter = require("./routers/restaurantlist.js");
+//app.use("/view", restaurantListRouter);
 
 app.get('/',function(req,res) {
 	checkAuth(res,req);
@@ -50,7 +50,7 @@ app.post('/login',function(req,res) {
 	
 
 MongoClient.connect(url, function(err, db) {
-    if (err) throw err;
+    if (err) throw err;
   var dbo = db.db("restaurantdb");
   var Data = req.body;
   // check the user account
