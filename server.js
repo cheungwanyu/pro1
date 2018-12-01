@@ -1,12 +1,9 @@
-var mongoose = require('mongoose');
+var MongoClient = require('mongodb').MongoClient;
 var express = require('express');
 var app = express();
 var session = require('cookie-session');
 var bodyParser = require('body-parser');
 const mongourl = "";
-
-var restaurantSchema = requrie("./models/restaurantSchema");
-var db = mongoose.connection;
 
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname +  '/public'));
@@ -30,13 +27,9 @@ app.use(bodyParser.json());
 app.use(express.static('public'));
 
 app.get('/',function(req,res) {
-	console.log(req.session);
-	if (!req.session.authenticated) {
-		res.redirect('/login');
-	} else {
-		res.status(200);
-		res.render('index',{name:req.session.username});
-	}
+	checkAuth(res,req);
+	res.status(200);
+	res.render('home',{});
 });
 
 app.get('/login',function(req,res) {
@@ -66,5 +59,21 @@ app.get('/logout',function(req,res) {
 	res.redirect('/');
 });
 
+function checkAuth(res,req){
+	console.log(req.session);
+	if (!req.session.authenticated) {
+		res.redirect('/login');
+	}
+}
+
+/* Create Restaurant */
+app.get("/createRestaurant",function(req,res){
+	
+});
+
+/* Search */
+app.get("/search",function(req,res){
+	
+});
 
 app.listen(app.listen(process.env.PORT || 8099));
