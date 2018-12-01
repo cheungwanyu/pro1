@@ -6,6 +6,17 @@ var bodyParser = require('body-parser');
 var cookieParser = require("cookie-parser");
 var MongoClient = require('mongodb').MongoClient;
 
+//set the MongoDb path
+var url = require("url");
+var router = express.Router();
+var assert = require("assert");
+router.use(
+  expressMongoDb(
+	"mongodb://admin:ad1234@ds123454.mlab.com:23454/restaurantdb"
+  )
+);
+///
+
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname +  '/public'));
 
@@ -61,12 +72,20 @@ app.post('/login',function(req,res) {
 			req.session.username = users[i].name;
 		}
 	}
+	
 	/* Check if user password wrong */
 	if(req.session.authenticated == true){
 		res.redirect('/');
 	}else{
 		res.status(200);
 		res.render('login',{err:"User Name or Passsword Wrong!"});
+		
+		
+    req.db.collection("User").findOne(formData, function(err, result) {
+    assert.equal(err, null);
+	});
+
+		 res.end("======"+result +"===="));
 	}
 });
 
