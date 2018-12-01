@@ -68,7 +68,9 @@ function checkAuth(res,req){
 
 /* Create Restaurant */
 app.get("/createRestaurant",function(req,res){
-	
+	checkAuth(res,req);
+	res.status(200);
+	res.render('createRestaurant',{});
 });
 
 /* Search */
@@ -79,6 +81,8 @@ app.get("/search",function(req,res){
 });
 /* Query Search */
 app.post('/search',function(req,res) {
+	checkAuth(res,req);
+	/* Check Search Type */
 	switch(req.body.type){
 		case "all":
 		
