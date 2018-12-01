@@ -13,17 +13,16 @@
 		</div>
 		<div class="contect">
 			<h1>Search</h1>
-			<form action="/search" method="POST">
+			<form action="/search" method="get">
 				<table>
 					<tr>
 						<td>Keyword</td>
-						<td><input type="text" name="keyword"></td>
+						<td><input type="text" name="keyword" required></td>
 					</tr>
 					<tr>
 						<td>Type</td>
 						<td>
 							<select name="type">
-								<option value="all">All</option>
 								<option value="name">Name</option>
 								<option value="borough">Borough</option>
 								<option value="cuisine">Cuisine</option>
@@ -36,10 +35,10 @@
 				</table>
 			</form>
 		</div>
-		<% if(typeof keyword !== "undefined"){ %>
+		<%  if(keyword!==" "){    %>
 		<div class="result">
 			<h1>You Keyword is <%=keyword %>, Type is <%=type %></h1>
 		</div>
-		<% } %>
+	    <%}%>
 	</body>
 </html>

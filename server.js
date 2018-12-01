@@ -178,31 +178,36 @@ app.post('/createRestaurant',function(req,res) {
 });
 
 
-/* Search */
+/* Search 
 app.get("/search",function(req,res){
 	checkAuth(res,req);
 	res.status(200);
 	res.render('search',{});
 });
+ */
+
 /* Query Search */
-app.post('/search',function(req,res) {
+app.get('/search',function(req,res) {
+	MongoClient.connect(url, function(err, db) {
+  if (err) throw err;
+  var dbo = db.db("restaurantdb");
+  dbo.collection("Restaurant").find().toArray(function(err, resu) {
+    if (err) throw err;
+    console.log(resu);
+    db.close();
+	
 	checkAuth(res,req);
-	/* Check Search Type */
-	switch(req.body.type){
-		case "all":
-		
-		break;
-		case "name":
-		
-		break;
-	}
-	/* Show result */
 	res.status(200);
-	res.render('search',{
-		keyword : req.body.keyword,
-		type: req.body.type
-	});
+	var keyword =req.body.keyword;
+	var type = req.body.type;
+	
+	res.render('search',{keyword:keyword, type:type });	
+	
+  });
 });
+});
+
+
 
 
 app.listen(app.listen(process.env.PORT || 8099));

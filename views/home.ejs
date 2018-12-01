@@ -54,9 +54,13 @@
 						<td> <%=k+1%>. <%=result[i].grades[k].user %> [ <%=result[i].grades[k].score %> ]</td>
 					</tr>
 		
-					<%	} 
+					<%	} %>
+					<tr>
+						<td>Created by: <%=result[i].owner %></td>
+					</tr>
+				
 										
-					if(checkUserRate){%>			
+				<%	if(checkUserRate){%>			
 					 <tr>
 				     <td>
 					  <form action="/rate" method="post">
