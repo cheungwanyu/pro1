@@ -5,7 +5,7 @@ var session = require('cookie-session');
 var bodyParser = require('body-parser');
 const mongourl = "";
 
-var restaurantSchema = requrie("./models/restaurantSchema");
+var restaurantSchema = require("./models/restaurantSchema");
 var db = mongoose.connection;
 
 app.set('view engine', 'ejs');
