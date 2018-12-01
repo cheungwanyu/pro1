@@ -6,16 +6,6 @@ var bodyParser = require('body-parser');
 const mongourl = "";
 
 
-//set the MongoDb path
-var url = require("url");
-var router = express.Router();
-var assert = require("assert");
-router.use(
-  expressMongoDb(
-	"mongodb://admin:ad1234@ds123454.mlab.com:23454/restaurantdb"
-  )
-);
-///
 
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname +  '/public'));
@@ -53,6 +43,19 @@ app.get('/login',function(req,res) {
 });
 
 app.post('/login',function(req,res) {
+	
+
+var MongoClient = require('mongodb').MongoClient;
+//Create a database named "mydb":
+var url ="mongodb://admin:ad1234@ds123454.mlab.com:23454/restaurantdb";
+
+MongoClient.connect(url, function(err, db) {
+  if (err) throw err;
+  console.log("Database created!");
+  db.close();
+});
+	
+	
 	for (var i=0; i<users.length; i++) {
 		if (users[i].name == req.body.name &&
 		    users[i].password == req.body.password) {
@@ -67,13 +70,6 @@ app.post('/login',function(req,res) {
 	}else{
 		res.status(200);
 		res.render('login',{err:"User Name or Passsword Wrong!"});
-		
-		
-    req.db.collection("User").findOne(formData, function(err, result) {
-    assert.equal(err, null);
-	});
-
-		 res.end("======"+result +"===="));
 	}
 });
 
