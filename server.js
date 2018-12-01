@@ -22,12 +22,8 @@ app.use(session({
   keys: [SECRETKEY1,SECRETKEY2]
 }));
 
-/* User Account */
-var users = new Array(
-	{name: 'developer', password: 'developer'},
-	{name: 'guest', password: 'guest'}
-);
 
+/* User Account */
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(express.static('public'));
