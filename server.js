@@ -91,6 +91,7 @@ app.get("/createRestaurant",function(req,res){
 /* Query Ceate Restaurant */
 app.post('/createRestaurant',function(req,res) {
 	checkAuth(res,req);
+	console.log(req.body);
 	var name = req.body.name;
 	var borough = req.body.borough;
 	var cuisine = req.body.cuisine;
