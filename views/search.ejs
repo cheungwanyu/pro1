@@ -1,0 +1,44 @@
+<html>
+	<head>
+		<link rel="stylesheet" type="text/css" href="home.css">
+	</head>
+	<body>
+		<div class="navigation">
+			<ul>
+				<li><a href="/createRestaurant">Create Restaurant </a></li>
+				<li><a href="/search">Search</a></li>
+				<li style="float:right"><a href="/logout">Logout</a></li>
+			</ul>
+		</div>
+		<div class="contect">
+			<h1>Search</h1>
+			<form action="/search" method="POST">
+				<table>
+					<tr>
+						<td>Keyword</td>
+						<td><input type="text" name="keyword"></td>
+					</tr>
+					<tr>
+						<td>Type</td>
+						<td>
+							<select name="type">
+								<option value="all">All</option>
+								<option value="name">Name</option>
+								<option value="borough">Borough</option>
+								<option value="cuisine">Cuisine</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td rowspan="2"><input type="submit"></td>
+					</tr>
+				</table>
+			</form>
+		</div>
+		<% if(typeof keyword !== "undefined"){ %>
+		<div class="result">
+			<h1>You Keyword is <%=keyword %>, Type is <%=type %></h1>
+		</div>
+		<% } %>
+	</body>
+</html>

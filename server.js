@@ -73,7 +73,26 @@ app.get("/createRestaurant",function(req,res){
 
 /* Search */
 app.get("/search",function(req,res){
-	
+	checkAuth(res,req);
+	res.status(200);
+	res.render('search',{});
+});
+/* Query Search */
+app.post('/search',function(req,res) {
+	switch(req.body.type){
+		case "all":
+		
+		break;
+		case "name":
+		
+		break;
+	}
+	/* Show result */
+	res.status(200);
+	res.render('search',{
+		keyword : req.body.keyword,
+		type: req.body.type
+	});
 });
 
 app.listen(app.listen(process.env.PORT || 8099));
