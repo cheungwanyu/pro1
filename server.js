@@ -49,9 +49,13 @@ var MongoClient = require('mongodb').MongoClient;
 var url = "mongodb://admin:ad1234@ds123454.mlab.com:23454/restaurantdb";
 
 MongoClient.connect(url, function(err, db) {
-  if (err) throw err;
-  console.log("Database created!");
-  db.close();
+    if (err) throw err;
+  var dbo = db.db("restaurantdb");
+  dbo.collection("User").findOne({}, function(err, result) {
+    if (err) throw err;
+    console.log(result.userId);
+    db.close();
+  });
 });
 
 
