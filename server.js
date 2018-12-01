@@ -105,4 +105,9 @@ app.post('/search',function(req,res) {
 	});
 });
 
+/* View Restaurant */
+app.get("/view",function(req,res){
+	
+});
+
 app.listen(app.listen(process.env.PORT || 8099));
