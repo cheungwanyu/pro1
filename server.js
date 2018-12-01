@@ -6,6 +6,16 @@ var bodyParser = require('body-parser');
 const mongourl = "";
 
 
+//test
+var router = express.Router();
+
+router.use(
+  expressMongoDb(
+	"mongodb://admin:ad1234@ds123454.mlab.com:23454/restaurantdb"
+  )
+);
+///
+
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname +  '/public'));
 
