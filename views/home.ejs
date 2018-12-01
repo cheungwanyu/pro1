@@ -47,18 +47,28 @@
 					<tr>
 						<td>User: <%=result[i].grades[k].user %> [ <%=result[i].grades[k].score %> ]</td>
 					</tr>
-					<%}
-					if(result[i].owner==user){
-					%>
+					<%} %>
 					
-					<tr>		
-					<td><%=user%></td>
-					</tr>
-					<%}%>
-					
+					<% for(var k=0; k<result[i].grades.length;k++) { %>
 					<tr>
-					<td><hr></td>
+				     <td>
+					  <form action="/rate" method="edit">
+					      <input type="hidden" value=" <%=result[i].restaurant_id %>" name="resId">
+					      <input type="submit" value="Rate" >
+						  
+				     </form>
 					</tr>
+					<%} %>
+	
+				
+				<%	if(result[i].owner==user){%>
+					<tr>		
+					<td><form action="/edit" method="edit"><input type="hidden" value=" <%=result[i].restaurant_id %>" name="resId"><input type="submit" value="Edit" ></form>
+					<form action="/edit" method="Cancel"><input type="hidden" value=" <%=result[i].restaurant_id %>" name="resId"><input type="submit" value="Delete" ></form></td>
+					</tr>
+				<%}%>
+					
+					
 				<% } %>
 			</table>
 		</div>
