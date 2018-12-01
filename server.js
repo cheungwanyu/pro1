@@ -50,7 +50,7 @@ app.post('/login',function(req,res) {
 	
 
 MongoClient.connect(url, function(err, db) {
-    if (err) throw err;
+    if (err) throw err;
   var dbo = db.db("restaurantdb");
   var Data = req.body;
   // check the user account
