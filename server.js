@@ -5,6 +5,9 @@ var session = require('cookie-session');
 var bodyParser = require('body-parser');
 const mongourl = "";
 
+
+
+
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname +  '/public'));
 
@@ -65,6 +68,10 @@ function checkAuth(res,req){
 		res.redirect('/login');
 	}
 }
+
+
+
+
 
 /* Create Restaurant */
 app.get("/createRestaurant",function(req,res){
