@@ -69,10 +69,6 @@ function checkAuth(res,req){
 	}
 }
 
-
-
-
-
 /* Create Restaurant */
 app.get("/createRestaurant",function(req,res){
 	checkAuth(res,req);

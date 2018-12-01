@@ -4,10 +4,11 @@
     "author": "Martin & Marco",
     "version": "0.0.1",
     "dependencies": {
-        "express": "*",
-        "ejs": "*",
         "body-parser": "*",
         "cookie-session": "*",
+        "ejs": "*",
+        "express": "*",
+        "express-mongo-db": "^2.0.4",
         "mongodb": "*"
     },
     "engine": "node >= 0.10.0",
