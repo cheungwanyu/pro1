@@ -72,6 +72,12 @@ app.get("/createRestaurant",function(req,res){
 	res.status(200);
 	res.render('createRestaurant',{});
 });
+/* Query Ceate Restaurant */
+app.post('/createRestaurant',function(req,res) {
+	checkAuth(res,req);
+	res.redirect('/');
+});
+
 
 /* Search */
 app.get("/search",function(req,res){
