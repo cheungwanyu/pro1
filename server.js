@@ -1,21 +1,14 @@
-var MongoClient = require('mongodb').MongoClient;
+var expressMongoDb = require("express-mongo-db");
 var express = require('express');
 var app = express();
 var session = require('cookie-session');
 var bodyParser = require('body-parser');
-var cookieParser = require("cookie-parser");
-var MongoClient = require('mongodb').MongoClient;
+const mongourl = "";
 
-//set the MongoDb path
-// var url = require("url");
-// var router = express.Router();
-// var assert = require("assert");
-// router.use(
-  // expressMongoDb(
-	// "mongodb://admin:ad1234@ds123454.mlab.com:23454/restaurantdb"
-  // )
-// );
-///
+//connect the mongoDB
+var MongoClient = require('mongodb').MongoClient;
+var url = "mongodb://admin:ad1234@ds123454.mlab.com:23454/restaurantdb";
+
 
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname +  '/public'));
@@ -23,16 +16,10 @@ app.use(express.static(__dirname +  '/public'));
 var SECRETKEY1 = 'COMPS381F';
 var SECRETKEY2 = 'Project';
 
-var mongourl = "mongodb://abc12345:abc12345@ds251332.mlab.com:51332/library"
-
 app.use(session({
   name: 'session',
   keys: [SECRETKEY1,SECRETKEY2]
 }));
-
-app.use(
-	cookieParser(),
-);
 
 /* User Account */
 var users = new Array(
@@ -44,19 +31,13 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(express.static('public'));
 
+var restaurantListRouter = require("./routers/restaurantlist.js");
+app.use("/view", restaurantListRouter);
+
 app.get('/',function(req,res) {
 	checkAuth(res,req);
-	MongoClient.connect(mongourl, function(err, db) {
-		if (err) throw err;
-		var dbo = db.db("library");
-		var query = { };
-		dbo.collection("restaurant").find(query).toArray(function(err, result) {
-			if (err) throw err;
-			res.status(200);
-			res.render('home',{result : result});
-			db.close();
-		});
-	});
+	res.status(200);
+	res.render('home',{});
 });
 
 app.get('/login',function(req,res) {
@@ -65,6 +46,24 @@ app.get('/login',function(req,res) {
 });
 
 app.post('/login',function(req,res) {
+	
+
+MongoClient.connect(url, function(err, db) {
+    if (err) throw err;
+  var dbo = db.db("restaurantdb");
+  var Data = req.body;
+  dbo.collection("User").findOne(Data, function(err, result) {
+	  assert.equal(err, null);
+	      if (result !== null) {
+			  console.log("result:" + result);
+			  req.session.authenticated = true;
+			req.session.username = result.userId;
+		  }
+    db.close();
+  });
+});
+
+	
 	for (var i=0; i<users.length; i++) {
 		if (users[i].name == req.body.name &&
 		    users[i].password == req.body.password) {
@@ -72,20 +71,12 @@ app.post('/login',function(req,res) {
 			req.session.username = users[i].name;
 		}
 	}
-	
 	/* Check if user password wrong */
 	if(req.session.authenticated == true){
 		res.redirect('/');
 	}else{
 		res.status(200);
 		res.render('login',{err:"User Name or Passsword Wrong!"});
-		
-		
-    req.db.collection("User").findOne(formData, function(err, result) {
-    assert.equal(err, null);
-	});
-
-		 res.end("======"+result +"====");
 	}
 });
 
@@ -110,16 +101,6 @@ app.get("/createRestaurant",function(req,res){
 /* Query Ceate Restaurant */
 app.post('/createRestaurant',function(req,res) {
 	checkAuth(res,req);
-	console.log(req.body);
-	var name = req.body.name;
-	var borough = req.body.borough;
-	var cuisine = req.body.cuisine;
-	var street = req.body.street;
-	var building = req.body.building;
-	var zipcode = req.body.zipcode;
-	var coord = req.body.coord;
-	var owner = req.body.owner;
-	var photo = req.body.photo;
 	res.redirect('/');
 });
 
@@ -150,13 +131,5 @@ app.post('/search',function(req,res) {
 	});
 });
 
-/* View Restaurant */
-app.get("/view",function(req,res){
-	var id = req.param('id');//restaurant id
-	res.status(200);
-	res.render('view',{
-		
-	});
-});
 
 app.listen(app.listen(process.env.PORT || 8099));
