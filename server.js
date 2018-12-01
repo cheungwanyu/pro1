@@ -22,6 +22,14 @@ app.use(session({
   keys: [SECRETKEY1,SECRETKEY2]
 }));
 
+/* create User */
+app.get("/createUser",function(req,res){
+	checkAuth(res,req);
+	res.status(200);
+	res.render('createUser',{});
+});
+
+
 
 /* User Account */
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -32,9 +40,25 @@ app.use(express.static('public'));
 //app.use("/view", restaurantListRouter);
 
 app.get('/',function(req,res) {
+	
+	
+	// find the restaurant list from database
+	MongoClient.connect(url, function(err, db) {
+  if (err) throw err;
+  var dbo = db.db("restaurantdb");
+  dbo.collection("Restaurant").find().toArray(function(err, resu) {
+    if (err) throw err;
+    console.log(resu);
+    db.close();
+	
 	checkAuth(res,req);
 	res.status(200);
-	res.render('home',{});
+	res.render('home',{result:resu});	
+	
+  });
+});
+	
+
 });
 
 app.get('/login',function(req,res) {
@@ -57,17 +81,18 @@ MongoClient.connect(url, function(err, db) {
 			  req.session.authenticated = true;
 			req.session.username = result.userId;
 			  console.log("result:" + result.userId);
+			  	res.redirect('/');
 		  }
 		  	
     db.close();
-	/* Check if user password wrong */
+	/* Check if user password wrong 
 	if(req.session.authenticated == true){
-		res.redirect('/');
+	
 	}else{
 		res.status(200);
 		res.render('login',{err:"User Name or Passsword Wrong!"});
 	}
-
+*/
   });
 });
 
