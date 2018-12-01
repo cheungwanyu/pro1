@@ -12,18 +12,52 @@
 			</ul>
 		</div>
 		<div>
-			<h1>Restaurant List</h1>
+		<h1> </h1>	
 			<table>
 				<tr>
-					<th width="80%">Name</th>
-					<th>View</th>
-					<th>Edit</th>
+					<th width="80%"><h1>Restaurant List</h1></th>
 				</tr>
 				<% for(var i=0; i<result.length;i++) { %>
 					<tr>
-						<td><%=result[i].name %></td>
-						<td><a href="/view?id=<%=result[i].restaurant_id %>">View</%=result[i].restaurant_id></td>
-						<td><a href="/update?id=<%=result[i].restaurant_id %>">Edit</%=result[i].restaurant_id></td>
+						<td>Name: <%=result[i].name %></td>
+					</tr>
+					<tr>
+						<td><img src="<%=result[i].photo %>"></img></td>
+					</tr>
+					<tr>
+						<td>Borough: <%=result[i].borough %></td>
+					</tr>
+					<tr>
+						<td>Cuisine: <%=result[i].cuisine %></td>
+					</tr>
+					<tr>
+						<td>Street: <%=result[i].address.street %></td>
+					</tr>
+					<tr>
+						<td>Building: <%=result[i].address.building %></td>
+					</tr>
+					<tr>
+						<td>Zipcode: <%=result[i].address.zipcode %></td>
+					</tr>
+					<tr>
+						<td>Grades:</td>
+					</tr>
+						<% for(var k=0; k<result[i].grades.length;k++) { %>
+					
+					<tr>
+						<td>User: <%=result[i].grades[k].user %> [ <%=result[i].grades[k].score %> ]</td>
+					</tr>
+					<%}
+					if(result[i].owner==user){
+					%>
+					
+					<tr>		
+					<td><%=user%></td>
+					</tr>
+					<%}%>
+					
+					<tr>
+					<td><hr></td>
 					</tr>
 				<% } %>
 			</table>

@@ -53,7 +53,7 @@ app.get('/',function(req,res) {
 	
 	checkAuth(res,req);
 	res.status(200);
-	res.render('home',{result:resu});	
+	res.render('home',{result:resu, user:req.session.username });	
 	
   });
 });
