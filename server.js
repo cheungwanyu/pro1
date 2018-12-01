@@ -4,13 +4,15 @@ var app = express();
 var session = require('cookie-session');
 var bodyParser = require('body-parser');
 var cookieParser = require("cookie-parser");
-var expressMongoDb = require("express-mongo-db");
+var MongoClient = require('mongodb').MongoClient;
 
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname +  '/public'));
 
 var SECRETKEY1 = 'COMPS381F';
 var SECRETKEY2 = 'Project';
+
+var mongourl = "mongodb://abc12345:abc12345@ds251332.mlab.com:51332/library"
 
 app.use(session({
   name: 'session',
@@ -19,9 +21,6 @@ app.use(session({
 
 app.use(
 	cookieParser(),
-	expressMongoDb(
-		"mongodb://abc12345:abc12345@ds251332.mlab.com:51332/library"
-	)
 );
 
 /* User Account */
@@ -36,8 +35,17 @@ app.use(express.static('public'));
 
 app.get('/',function(req,res) {
 	checkAuth(res,req);
-	res.status(200);
-	res.render('home',{});
+	MongoClient.connect(mongourl, function(err, db) {
+		if (err) throw err;
+		var dbo = db.db("library");
+		var query = { };
+		dbo.collection("restaurant").find(query).toArray(function(err, result) {
+			if (err) throw err;
+			res.status(200);
+			res.render('home',{result : result});
+			db.close();
+		});
+	});
 });
 
 app.get('/login',function(req,res) {
