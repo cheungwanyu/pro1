@@ -1,10 +1,10 @@
-var expressMongoDb = require("express-mongo-db");
+var MongoClient = require('mongodb').MongoClient;
 var express = require('express');
 var app = express();
 var session = require('cookie-session');
 var bodyParser = require('body-parser');
-const mongourl = "";
-
+var cookieParser = require("cookie-parser");
+var expressMongoDb = require("express-mongo-db");
 
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname +  '/public'));
@@ -17,6 +17,13 @@ app.use(session({
   keys: [SECRETKEY1,SECRETKEY2]
 }));
 
+app.use(
+	cookieParser(),
+	expressMongoDb(
+		"mongodb://abc12345:abc12345@ds251332.mlab.com:51332/library"
+	)
+);
+
 /* User Account */
 var users = new Array(
 	{name: 'developer', password: 'developer'},
@@ -26,9 +33,6 @@ var users = new Array(
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(express.static('public'));
-
-var restaurantListRouter = require("./routers/restaurantlist.js");
-app.use("/view", restaurantListRouter);
 
 app.get('/',function(req,res) {
 	checkAuth(res,req);
@@ -109,5 +113,13 @@ app.post('/search',function(req,res) {
 	});
 });
 
+/* View Restaurant */
+app.get("/view",function(req,res){
+	var id = req.param('id');//restaurant id
+	res.status(200);
+	res.render('view',{
+		
+	});
+});
 
 app.listen(app.listen(process.env.PORT || 8099));
