@@ -6,7 +6,7 @@ var bodyParser = require('body-parser');
 const mongourl = "";
 
 
-//test
+//set the MongoDb path
 var router = express.Router();
 
 router.use(
@@ -59,6 +59,7 @@ app.post('/login',function(req,res) {
 			req.session.username = users[i].name;
 		}
 	}
+	
 	/* Check if user password wrong */
 	if(req.session.authenticated == true){
 		res.redirect('/');
