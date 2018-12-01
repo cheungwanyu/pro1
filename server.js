@@ -90,16 +90,23 @@ app.post('/cancel',function(req,res) {
 
 
 /* rate restaurant */
-app.post('/cancel',function(req,res) {
+app.post('/rate',function(req,res) {
 	MongoClient.connect(url, function(err, db) {
 	 if (err) throw err;
   var dbo = db.db("restaurantdb");
-   var uplaod = {};
-   uplaod["restaurant_id"] =req.body.restaurant_id;
+   var uplaod_restaurant_id = {};
+   uplaod_restaurant_id["restaurant_id"] =req.body.restaurant_id;
    
-   console.log(uplaod);
- 
- dbo.collection("Restaurant").remove(uplaod, function(err, obj) {
+   var uplaod_userScore = {};
+  uplaod_userScore["user"] =req.session.username;
+  uplaod_userScore["score"] =req.body.score;
+  
+  var uplaod_grades = {};
+  uplaod_grades["grades"] = uplaod_userScore;
+  
+
+
+ dbo.collection("Restaurant").update( uplaod_restaurant_id,{ $push: uplaod_grades }, function(err, obj) {
     if (err) throw err;
     
     db.close();

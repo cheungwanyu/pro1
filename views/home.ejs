@@ -51,7 +51,7 @@
 						%>
 					
 					<tr>
-						<td>User: <%=result[i].grades[k].user %> [ <%=result[i].grades[k].score %> ]</td>
+						<td><%=result[i].grades[k].user %> [ <%=result[i].grades[k].score %> ]</td>
 					</tr>
 		
 					<%	} 
@@ -60,7 +60,7 @@
 					 <tr>
 				     <td>
 					  <form action="/rate" method="post">
-					      <input type="hidden" value=" <%=result[i].restaurant_id %>" name="resId">
+					      <input type="hidden" value="<%=result[i].restaurant_id %>" name="restaurant_id">
 						  <input type="number"  name="score" min="1" max="10" value="10" required >
 					      <input type="submit" value="Rate" >	  
 				     </form>
