@@ -6,7 +6,6 @@ var bodyParser = require('body-parser');
 const mongourl = "";
 
 
-
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname +  '/public'));
 
@@ -43,19 +42,6 @@ app.get('/login',function(req,res) {
 });
 
 app.post('/login',function(req,res) {
-	
-
-var MongoClient = require('mongodb').MongoClient;
-//Create a database named "mydb":
-var url ="mongodb://admin:ad1234@ds123454.mlab.com:23454/restaurantdb";
-
-MongoClient.connect(url, function(err, db) {
-  if (err) throw err;
-  console.log("Database created!");
-  db.close();
-});
-	
-	
 	for (var i=0; i<users.length; i++) {
 		if (users[i].name == req.body.name &&
 		    users[i].password == req.body.password) {
@@ -63,7 +49,6 @@ MongoClient.connect(url, function(err, db) {
 			req.session.username = users[i].name;
 		}
 	}
-	
 	/* Check if user password wrong */
 	if(req.session.authenticated == true){
 		res.redirect('/');
