@@ -43,10 +43,10 @@ app.get('/login',function(req,res) {
 
 app.post('/login',function(req,res) {
 	
-	
+
 var MongoClient = require('mongodb').MongoClient;
 //Create a database named "mydb":
-var url = "mongodb://<dbuser>:<dbpassword>@ds123454.mlab.com:23454/restaurantdb";
+var url = "mongodb://admin:ad1234@ds123454.mlab.com:23454/restaurantdb";
 
 MongoClient.connect(url, function(err, db) {
   if (err) throw err;
