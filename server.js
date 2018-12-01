@@ -1,13 +1,16 @@
-var mongoose = require('mongoose');
+var MongoClient = require('mongodb').MongoClient;
 var express = require('express');
 var app = express();
 var session = require('cookie-session');
 var bodyParser = require('body-parser');
 const mongourl = "";
 
+<<<<<<< HEAD
+=======
 var restaurantSchema = require("./models/restaurantSchema");
 var db = mongoose.connection;
 
+>>>>>>> 1c0b220d492105c0053bd77360fd49c7a3b3f4ec
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname +  '/public'));
 
@@ -30,13 +33,9 @@ app.use(bodyParser.json());
 app.use(express.static('public'));
 
 app.get('/',function(req,res) {
-	console.log(req.session);
-	if (!req.session.authenticated) {
-		res.redirect('/login');
-	} else {
-		res.status(200);
-		res.render('index',{name:req.session.username});
-	}
+	checkAuth(res,req);
+	res.status(200);
+	res.render('home',{});
 });
 
 app.get('/login',function(req,res) {
@@ -66,5 +65,50 @@ app.get('/logout',function(req,res) {
 	res.redirect('/');
 });
 
+function checkAuth(res,req){
+	console.log(req.session);
+	if (!req.session.authenticated) {
+		res.redirect('/login');
+	}
+}
+
+/* Create Restaurant */
+app.get("/createRestaurant",function(req,res){
+	checkAuth(res,req);
+	res.status(200);
+	res.render('createRestaurant',{});
+});
+/* Query Ceate Restaurant */
+app.post('/createRestaurant',function(req,res) {
+	checkAuth(res,req);
+	res.redirect('/');
+});
+
+
+/* Search */
+app.get("/search",function(req,res){
+	checkAuth(res,req);
+	res.status(200);
+	res.render('search',{});
+});
+/* Query Search */
+app.post('/search',function(req,res) {
+	checkAuth(res,req);
+	/* Check Search Type */
+	switch(req.body.type){
+		case "all":
+		
+		break;
+		case "name":
+		
+		break;
+	}
+	/* Show result */
+	res.status(200);
+	res.render('search',{
+		keyword : req.body.keyword,
+		type: req.body.type
+	});
+});
 
 app.listen(app.listen(process.env.PORT || 8099));
