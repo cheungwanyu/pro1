@@ -9,7 +9,8 @@
         "ejs": "*",
         "express": "*",
         "express-mongo-db": "^2.0.4",
-        "mongodb": "*"
+        "mongodb": "*",
+        "cookie-parser": "*"
     },
     "engine": "node >= 0.10.0",
     "scripts": {

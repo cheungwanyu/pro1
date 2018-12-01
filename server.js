@@ -1,4 +1,4 @@
-var MongoClient = require('mongodb').MongoClient;
+var expressMongoDb = require("express-mongo-db");
 var express = require('express');
 var app = express();
 var session = require('cookie-session');
@@ -26,6 +26,9 @@ var users = new Array(
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(express.static('public'));
+
+var restaurantListRouter = require("./routers/restaurantlist.js");
+app.use("/view", restaurantListRouter);
 
 app.get('/',function(req,res) {
 	checkAuth(res,req);
@@ -106,13 +109,5 @@ app.post('/search',function(req,res) {
 	});
 });
 
-/* View Restaurant */
-app.get("/view",function(req,res){
-	var id = req.param('id');//restaurant id
-	res.status(200);
-	res.render('view',{
-		
-	});
-});
 
 app.listen(app.listen(process.env.PORT || 8099));
