@@ -7,8 +7,9 @@ const mongourl = "";
 
 
 //set the MongoDb path
+var url = require("url");
 var router = express.Router();
-
+var assert = require("assert");
 router.use(
   expressMongoDb(
 	"mongodb://admin:ad1234@ds123454.mlab.com:23454/restaurantdb"
@@ -66,6 +67,13 @@ app.post('/login',function(req,res) {
 	}else{
 		res.status(200);
 		res.render('login',{err:"User Name or Passsword Wrong!"});
+		
+		
+    req.db.collection("User").findOne(formData, function(err, result) {
+    assert.equal(err, null);
+	});
+
+		 res.end("======"+result +"===="));
 	}
 });
 
