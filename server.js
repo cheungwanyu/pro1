@@ -51,9 +51,14 @@ app.post('/login',function(req,res) {
 MongoClient.connect(url, function(err, db) {
     if (err) throw err;
   var dbo = db.db("restaurantdb");
-  dbo.collection("User").findOne({}, function(err, result) {
-    if (err) throw err;
-    console.log(result.userId);
+  var Data = req.body;
+  dbo.collection("User").findOne(Data, function(err, result) {
+	  assert.equal(err, null);
+	      if (result !== null) {
+			  console.log("result:" + result);
+			  req.session.authenticated = true;
+			req.session.username = result.userId;
+		  }
     db.close();
   });
 });
