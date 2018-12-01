@@ -91,6 +91,15 @@ app.get("/createRestaurant",function(req,res){
 /* Query Ceate Restaurant */
 app.post('/createRestaurant',function(req,res) {
 	checkAuth(res,req);
+	var name = req.body.name;
+	var borough = req.body.borough;
+	var cuisine = req.body.cuisine;
+	var street = req.body.street;
+	var building = req.body.building;
+	var zipcode = req.body.zipcode;
+	var coord = req.body.coord;
+	var owner = req.body.owner;
+	var photo = req.body.photo;
 	res.redirect('/');
 });
 
