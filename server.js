@@ -11,6 +11,8 @@ var MongoClient = require('mongodb').MongoClient;
 var url = "mongodb://admin:ad1234@ds123454.mlab.com:23454/restaurantdb";
 
 
+app.use(bodyParser.json());
+
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname +  '/public'));
 
@@ -36,24 +38,22 @@ app.get('/createUser',function(req,res) {
 /*create user */
 app.post('/usercreate',function(req,res) {
 	MongoClient.connect(url, function(err, db) {
-	 if (err) throw err;
-  var dbo = db.db("restaurantdb");
-   var uplaod = {};
-   uplaod["restaurant_id"] =req.body.restaurant_id;
-   
-   console.log(uplaod);
- 
- dbo.collection("Restaurant").remove(uplaod, function(err, obj) {
-    if (err) throw err;
-    
-    db.close();
+		if (err) throw err;
+		var dbo = db.db("restaurantdb");
+		var userid =req.body.userId;
+		var pwd = req.body.password;
+		var uplaod = {userid : userid, password : pwd};
+		dbo.collection("user").insertOne(uplaod, function(err, obj) {
+			if (err) throw err;
+			console.log("User Created");
+			db.close();
+			
+			/* Redirect to Home */
+			res.status(200);
+			res.redirect('/');	
 	
-	checkAuth(res,req);
-	res.status(200);
-   res.redirect('/');	
-	
-  }); 
-});
+		}); 
+	});
 });
 
 
