@@ -198,8 +198,26 @@ app.get("/createRestaurant",function(req,res){
 
 /*  Ceate the Restaurant document */
 app.post('/createRest',function(req,res) {
-	 var data={};
-   data['restaurant_id'] = req.body.restaurant_id;
+
+	
+  MongoClient.connect(url, function(err, db) {
+	 if (err) throw err;
+  var dbo = db.db("restaurantdb");
+  var check =false;
+  var  restaurantID ;
+  do {  
+    restaurantID = Math.floor(Math.random() * 999999) + 1 ;
+    dbo.collection("User").findOne({restaurant_id:[restaurantID]}, function(err, result) {
+	  assert.equal(err, null);
+	    if (result !== null) {
+		 check =true;
+		 }		  	
+    db.close();	
+  });
+  }while(check)
+	  
+  	 var data={};
+    data['restaurant_id'] = restaurantID;
    data['name'] = req.body.name;
    data['borough'] = req.body.borough ;
    data['cuisine'] = req.body.cuisine ;
@@ -213,10 +231,8 @@ app.post('/createRest',function(req,res) {
    data['address'] = subdata1;
    data['owner'] = req.session.username;
 	   console.log(data);
-	
-  MongoClient.connect(url, function(err, db) {
-	 if (err) throw err;
-  var dbo = db.db("restaurantdb");
+  
+  
 	  /*
  dbo.collection("Restaurant").insert(data, function(err, obj) {
     if (err) throw err;  
