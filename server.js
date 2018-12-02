@@ -259,8 +259,6 @@ app.post('/createRest',function(req,res) {
       fs.readFile(filename, function(err, data1) {
         assert.equal(err, null);
         data["photo"] = new Buffer(data1).toString("base64");
-		
-		//因為readFile係async，所以upload statment 等佢read完再做, 所以寫係到
        
 	var dbo = db.db("restaurantdb");
   dbo.collection("Restaurant").insertOne(data, function(err, result) {
@@ -351,7 +349,6 @@ MongoClient.connect(url, function(err, db) {
         assert.equal(err, null);
         data["photo"] = new Buffer(data1).toString("base64");
 		
-		//因為readFile係async，所以upload statment 等佢read完再做, 所以寫係到
   
  dbo.collection("Restaurant").update( filter,{$set: data}, function(err, obj) {
     if (err) throw err;
