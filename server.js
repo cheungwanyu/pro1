@@ -250,21 +250,23 @@ app.post('/createRest',function(req,res) {
 /* go to Edit Restaurant page */
 
 app.get("/edit",function(req,res){
-  MongoClient.connect(url, function(err, db) {
+
+MongoClient.connect(url, function(err, db) {
   if (err) throw err;
   var dbo = db.db("restaurantdb");
-  dbo.collection("Restaurant").find(req.query.restaurant_id).findOne(function(err, resu) {
+  dbo.collection("Restaurant").find().toArray(function(err, resu) {
     if (err) throw err;
+    console.log(resu);
     db.close();
 	
-
+	checkAuth(res,req);
+	res.status(200);
+	res.render('eRestaurant',{result:resu[0] });
 	
   });
 });
 
-	checkAuth(res,req);
-	res.status(200);
-	res.render('editRestaurant',{result:"123" });	
+		
 });
 
 
