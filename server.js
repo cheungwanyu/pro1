@@ -42,10 +42,10 @@ app.post('/usercreate',function(req,res) {
 		var dbo = db.db("restaurantdb");
 		var userid =req.body.userId;
 		var pwd = req.body.password;
-		var uplaod = {userid : userid, password : pwd};
-		dbo.collection("user").insertOne(uplaod, function(err, obj) {
+		var uplaod = {userId : userid, password : pwd};
+		dbo.collection("User").insertOne(uplaod, function(err, obj) {
 			if (err) throw err;
-			console.log("User Created");
+			console.log("User Created"+ req.body.userId);
 			db.close();
 			
 			/* Redirect to Home */
@@ -147,30 +147,27 @@ app.get('/login',function(req,res) {
 });
 
 app.post('/login',function(req,res) {
-MongoClient.connect(url, function(err, db) {
-    if (err) throw err;
-  var dbo = db.db("restaurantdb");
-  var Data = req.body;
-  // check the user account
-  dbo.collection("User").findOne(Data, function(err, result) {
-	  assert.equal(err, null);
-	    if (result !== null) {
-			
-			  req.session.authenticated = true;
-			req.session.username = result.userId;
-			  console.log("result:" + result.userId);
-			  	res.redirect('/');
-		  }		  	
-    db.close();
-	 //Check if user password wrong 
-	if(req.session.authenticated == true){
-	
-	}else{
-		res.status(200);
-		res.render('login',{err:"User Name or Passsword Wrong!"});
-	}
-  });
-});
+	MongoClient.connect(url, function(err, db) {
+	    if (err) throw err;
+		var dbo = db.db("restaurantdb");
+		var Data = req.body;
+		// check the user account
+		dbo.collection("User").findOne(Data, function(err, result) {
+			assert.equal(err, null);
+			if (result !== null) {	
+				req.session.authenticated = true;
+				req.session.username = result.userId;
+				console.log("result:" + result.userId);
+				res.redirect('/');
+				db.close();
+			 }else{
+				 //if user password wrong 
+				res.status(200);
+				res.render('login',{err:"User Name or Passsword Wrong!"});
+				db.close();
+			 }
+		});
+	});
 });
 
 app.get('/logout',function(req,res) {
@@ -180,7 +177,7 @@ app.get('/logout',function(req,res) {
 
 function checkAuth(res,req){
 	console.log(req.session);
-	if (!req.session.authenticated) {
+	if (!req.session.authenticated){
 		res.redirect('/login');
 	}
 }
