@@ -33,6 +33,29 @@ app.get('/createUser',function(req,res) {
 	res.render('createUser',{err:""});
 });
 
+/*create user */
+app.post('/usercreate',function(req,res) {
+	MongoClient.connect(url, function(err, db) {
+	 if (err) throw err;
+  var dbo = db.db("restaurantdb");
+   var uplaod = {};
+   uplaod["restaurant_id"] =req.body.restaurant_id;
+   
+   console.log(uplaod);
+ 
+ dbo.collection("Restaurant").remove(uplaod, function(err, obj) {
+    if (err) throw err;
+    
+    db.close();
+	
+	checkAuth(res,req);
+	res.status(200);
+   res.redirect('/');	
+	
+  }); 
+});
+});
+
 
 /* User Account */
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -195,9 +218,19 @@ app.get('/searchRestaurant',function(req,res) {
 var data = "{"+req.query.type+":/"+req.query.keyword+"/}";
 	  console.log(data); */
 
-var data = req.query.keyword
+var data = req.query.keyword;
 if(req.query.type =="all"){
-
+	
+	
+	  dbo.collection("Restaurant").find({$or:[{"name": {$regex: ".*" + data + ".*"}},{"cuisine": {$regex: ".*" + data + ".*"}},{"borough":  {$regex: ".*" + data + ".*"}}]}).toArray(function(err, resu) {
+    if (err) throw err;
+    console.log(resu);
+    db.close();
+	checkAuth(res,req);
+	res.status(200);
+	res.render('home',{result:resu, user:req.session.username });	
+	
+  });
   	
 	
 }else{
