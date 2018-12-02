@@ -188,14 +188,17 @@ app.post('/cancel',function(req,res) {
 });
 
 
-/* Create Restaurant */
+/* go to Create Restaurant page */
 app.get("/createRestaurant",function(req,res){
 	checkAuth(res,req);
 	res.status(200);
 	res.render('createRestaurant',{});
 });
 
-/* Query Ceate Restaurant */
+
+
+
+/*  Ceate the Restaurant document */
 app.post('/createRestaurant',function(req,res) {
 	checkAuth(res,req);
 	res.redirect('/');
