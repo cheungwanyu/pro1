@@ -48,11 +48,11 @@
 						<td class="col">Cuisine</td>
 						<td><%=result[i].cuisine %></td>
 					</tr>
-					<% if(result[i].address.coord){ %>
+					<% if(result[i].address.coord != ""){ %>
 						<tr>
 							<td colspan="2">
-								<a href="https://www.google.com.hk/maps/@<%=result[i].coord %>" target="_Black">
-								<img src="https://maps.googleapis.com/maps/api/staticmap?center=<%=result[i].coord %>&zoom=14&size=600x200&key=AIzaSyAFVdqUK9UIT1qzI_jgStmiDKOfIVCkucs"/>
+								<a href="https://www.google.com.hk/maps/@<%=result[i].address.coord %>" target="_Black">
+								<img src="https://maps.googleapis.com/maps/api/staticmap?center=<%=result[i].address.coord %>&zoom=14&size=600x200&key=AIzaSyAFVdqUK9UIT1qzI_jgStmiDKOfIVCkucs"/>
 								</a>
 							</td>
 						</tr>
