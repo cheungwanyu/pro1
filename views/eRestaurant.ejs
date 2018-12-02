@@ -13,7 +13,7 @@
 		</div>
 		<div class="centent">
 			<h1>Edit Restaurant</h1>
-			<form action="/editRest" method="POST">
+			<form action="/editRest" method="POST" enctype="multipart/form-data">
 			    <input type="hidden" name="restaurant_id" value="<%= result.restaurant_id%>" required>
 				<table>
 					<tr>
