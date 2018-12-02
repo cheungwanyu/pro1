@@ -27,36 +27,6 @@ app.use(session({
 
 
 
-
-app.get('/createUser',function(req,res) {
-	res.status(200);
-	res.render('createUser',{err:""});
-});
-
-/*create user */
-app.post('/usercreate',function(req,res) {
-	MongoClient.connect(url, function(err, db) {
-	 if (err) throw err;
-  var dbo = db.db("restaurantdb");
-   var uplaod = {};
-   uplaod["restaurant_id"] =req.body.restaurant_id;
-   
-   console.log(uplaod);
- 
- dbo.collection("Restaurant").remove(uplaod, function(err, obj) {
-    if (err) throw err;
-    
-    db.close();
-	
-	checkAuth(res,req);
-	res.status(200);
-   res.redirect('/');	
-	
-  }); 
-});
-});
-
-
 /* User Account */
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -64,94 +34,21 @@ app.use(express.static('public'));
 
 
 
-
-
-
-/* View the restaurant list*/
-app.get('/',function(req,res) {
-	MongoClient.connect(url, function(err, db) {
-  if (err) throw err;
-  var dbo = db.db("restaurantdb");
-  dbo.collection("Restaurant").find().toArray(function(err, resu) {
-    if (err) throw err;
-    console.log(resu);
-    db.close();
-	
-	checkAuth(res,req);
-	res.status(200);
-	res.render('home',{result:resu, user:req.session.username });	
-	
-  });
-});
-});
-
-
-/* Delete restaurant */
-app.post('/cancel',function(req,res) {
-	MongoClient.connect(url, function(err, db) {
-	 if (err) throw err;
-  var dbo = db.db("restaurantdb");
-   var uplaod = {};
-   uplaod["restaurant_id"] =req.body.restaurant_id;
-   
-   console.log(uplaod);
- 
- dbo.collection("Restaurant").remove(uplaod, function(err, obj) {
-    if (err) throw err;
-    
-    db.close();
-	
-	checkAuth(res,req);
-	res.status(200);
-   res.redirect('/');	
-	
-  }); 
-});
-});
-
-
-/* rate restaurant */
-app.post('/rate',function(req,res) {
-	MongoClient.connect(url, function(err, db) {
-	 if (err) throw err;
-  var dbo = db.db("restaurantdb");
-   var uplaod_restaurant_id = {};
-   uplaod_restaurant_id["restaurant_id"] =req.body.restaurant_id;
-   
-   var uplaod_userScore = {};
-  uplaod_userScore["user"] =req.session.username;
-  uplaod_userScore["score"] =req.body.score;
-  
-  var uplaod_grades = {};
-  uplaod_grades["grades"] = uplaod_userScore;
-  
-
-
- dbo.collection("Restaurant").update( uplaod_restaurant_id,{ $push: uplaod_grades }, function(err, obj) {
-    if (err) throw err;
-    
-    db.close();
-	
-	checkAuth(res,req);
-	res.status(200);
-   res.redirect('/');	
-	
-  }); 
-});
-});
-
+/*go to login page */
 
 app.get('/login',function(req,res) {
 	res.status(200);
 	res.render('login',{err:""});
 });
 
+
+
+  /* login the user account*/
 app.post('/login',function(req,res) {
 MongoClient.connect(url, function(err, db) {
     if (err) throw err;
   var dbo = db.db("restaurantdb");
   var Data = req.body;
-  // check the user account
   dbo.collection("User").findOne(Data, function(err, result) {
 	  assert.equal(err, null);
 	    if (result !== null) {
@@ -186,12 +83,118 @@ function checkAuth(res,req){
 	}
 }
 
+
+
+/*go to create user page */
+app.get('/createUser',function(req,res) {
+	res.status(200);
+	res.render('createUser',{err:""});
+});
+
+
+
+/*create user */
+app.post('/cuser',function(req,res) {
+	MongoClient.connect(url, function(err, db) {
+	 if (err) throw err;
+  var dbo = db.db("restaurantdb");
+  var data={};
+   data['userId'] = req.body.userId;
+   data['password'] = req.body.password;
+  	  console.log(data);
+ dbo.collection("User").insert(data, function(err, obj) {
+    if (err) throw err;  
+    db.close();
+	checkAuth(res,req);
+	res.status(200);
+	console.log(obj);
+	
+  });
+});
+});
+
+
+
+/* View the restaurant list*/
+app.get('/',function(req,res) {
+	MongoClient.connect(url, function(err, db) {
+  if (err) throw err;
+  var dbo = db.db("restaurantdb");
+  dbo.collection("Restaurant").find().toArray(function(err, resu) {
+    if (err) throw err;
+    console.log(resu);
+    db.close();
+	
+	checkAuth(res,req);
+	res.status(200);
+	res.render('home',{result:resu, user:req.session.username });	
+	
+  });
+});
+});
+
+/* rate restaurant */
+app.post('/rate',function(req,res) {
+	MongoClient.connect(url, function(err, db) {
+	 if (err) throw err;
+  var dbo = db.db("restaurantdb");
+   var uplaod_restaurant_id = {};
+   uplaod_restaurant_id["restaurant_id"] =req.body.restaurant_id;
+   
+   var uplaod_userScore = {};
+  uplaod_userScore["user"] =req.session.username;
+  uplaod_userScore["score"] =req.body.score;
+  
+  var uplaod_grades = {};
+  uplaod_grades["grades"] = uplaod_userScore;
+  
+
+
+ dbo.collection("Restaurant").update( uplaod_restaurant_id,{ $push: uplaod_grades }, function(err, obj) {
+    if (err) throw err;
+    
+    db.close();
+	
+	checkAuth(res,req);
+	res.status(200);
+   res.redirect('/');	
+	
+  }); 
+});
+});
+
+
+/* Delete restaurant */
+app.post('/cancel',function(req,res) {
+	MongoClient.connect(url, function(err, db) {
+	 if (err) throw err;
+  var dbo = db.db("restaurantdb");
+   var uplaod = {};
+   uplaod["restaurant_id"] =req.body.restaurant_id;
+   
+   console.log(uplaod);
+ 
+ dbo.collection("Restaurant").remove(uplaod, function(err, obj) {
+    if (err) throw err;
+    
+    db.close();
+	
+	checkAuth(res,req);
+	res.status(200);
+   res.redirect('/');	
+	
+  }); 
+});
+});
+
+
 /* Create Restaurant */
 app.get("/createRestaurant",function(req,res){
 	checkAuth(res,req);
 	res.status(200);
 	res.render('createRestaurant',{});
 });
+
 /* Query Ceate Restaurant */
 app.post('/createRestaurant',function(req,res) {
 	checkAuth(res,req);
@@ -200,12 +203,14 @@ app.post('/createRestaurant',function(req,res) {
 
 
 
+
+
+/* go to search pgae */
 app.get("/search",function(req,res){
 	checkAuth(res,req);
 	res.status(200);
 	res.render('search',{});
 });
-
 
 /* Query Search */
 app.get('/searchRestaurant',function(req,res) {
@@ -242,14 +247,8 @@ if(req.query.type =="all"){
 	res.status(200);
 	res.render('home',{result:resu, user:req.session.username });	
 	
-  });
-  
-	
+  });	
 }
-
-  
-  
-  
 });
 });
 
