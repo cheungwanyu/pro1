@@ -11,8 +11,6 @@ var MongoClient = require('mongodb').MongoClient;
 var url = "mongodb://admin:ad1234@ds123454.mlab.com:23454/restaurantdb";
 
 
-app.use(bodyParser.json());
-
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname +  '/public'));
 
@@ -29,34 +27,6 @@ app.use(session({
 
 
 
-
-app.get('/createUser',function(req,res) {
-	res.status(200);
-	res.render('createUser',{err:""});
-});
-
-/*create user */
-app.post('/usercreate',function(req,res) {
-	MongoClient.connect(url, function(err, db) {
-		if (err) throw err;
-		var dbo = db.db("restaurantdb");
-		var userid =req.body.userId;
-		var pwd = req.body.password;
-		var uplaod = {userId : userid, password : pwd};
-		dbo.collection("User").insertOne(uplaod, function(err, obj) {
-			if (err) throw err;
-			console.log("User Created"+ req.body.userId);
-			db.close();
-			
-			/* Redirect to Home */
-			res.status(200);
-			res.redirect('/');	
-	
-		}); 
-	});
-});
-
-
 /* User Account */
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -64,6 +34,84 @@ app.use(express.static('public'));
 
 
 
+/*go to login page */
+
+app.get('/login',function(req,res) {
+	res.status(200);
+	res.render('login',{err:""});
+});
+
+
+
+  /* login the user account*/
+app.post('/login',function(req,res) {
+MongoClient.connect(url, function(err, db) {
+    if (err) throw err;
+  var dbo = db.db("restaurantdb");
+  var Data = req.body;
+  dbo.collection("User").findOne(Data, function(err, result) {
+	  assert.equal(err, null);
+	    if (result !== null) {
+			
+			  req.session.authenticated = true;
+			req.session.username = result.userId;
+			  console.log("result:" + result.userId);
+			  	res.redirect('/');
+		  }		  	
+    db.close();
+	/* Check if user password wrong 
+	if(req.session.authenticated == true){
+	
+	}else{
+		res.status(200);
+		res.render('login',{err:"User Name or Passsword Wrong!"});
+	}
+*/
+  });
+});
+});
+
+app.get('/logout',function(req,res) {
+	req.session = null;
+	res.redirect('/');
+});
+
+function checkAuth(res,req){
+	console.log(req.session);
+	if (!req.session.authenticated) {
+		res.redirect('/login');
+	}
+}
+
+
+
+/*go to create user page */
+app.get('/createUser',function(req,res) {
+	res.status(200);
+	res.render('createUser',{err:""});
+});
+
+
+
+/*create user */
+app.post('/cuser',function(req,res) {
+	MongoClient.connect(url, function(err, db) {
+	 if (err) throw err;
+  var dbo = db.db("restaurantdb");
+  var data={};
+   data['userId'] = req.body.userId;
+   data['password'] = req.body.password;
+  	  console.log(data);
+ dbo.collection("User").insert(data, function(err, obj) {
+    if (err) throw err;  
+    db.close();
+	checkAuth(res,req);
+	res.status(200);
+	console.log(obj);
+	
+  });
+});
+});
 
 
 
@@ -84,31 +132,6 @@ app.get('/',function(req,res) {
   });
 });
 });
-
-
-/* Delete restaurant */
-app.post('/cancel',function(req,res) {
-	MongoClient.connect(url, function(err, db) {
-	 if (err) throw err;
-  var dbo = db.db("restaurantdb");
-   var uplaod = {};
-   uplaod["restaurant_id"] =req.body.restaurant_id;
-   
-   console.log(uplaod);
- 
- dbo.collection("Restaurant").remove(uplaod, function(err, obj) {
-    if (err) throw err;
-    
-    db.close();
-	
-	checkAuth(res,req);
-	res.status(200);
-   res.redirect('/');	
-	
-  }); 
-});
-});
-
 
 /* rate restaurant */
 app.post('/rate',function(req,res) {
@@ -141,67 +164,84 @@ app.post('/rate',function(req,res) {
 });
 
 
-app.get('/login',function(req,res) {
-	res.status(200);
-	res.render('login',{err:""});
-});
-
-app.post('/login',function(req,res) {
+/* Delete restaurant */
+app.post('/cancel',function(req,res) {
 	MongoClient.connect(url, function(err, db) {
-	    if (err) throw err;
-		var dbo = db.db("restaurantdb");
-		var Data = req.body;
-		// check the user account
-		dbo.collection("User").findOne(Data, function(err, result) {
-			assert.equal(err, null);
-			if (result !== null) {	
-				req.session.authenticated = true;
-				req.session.username = result.userId;
-				console.log("result:" + result.userId);
-				res.redirect('/');
-				db.close();
-			 }else{
-				 //if user password wrong 
-				res.status(200);
-				res.render('login',{err:"User Name or Passsword Wrong!"});
-				db.close();
-			 }
-		});
-	});
+	 if (err) throw err;
+  var dbo = db.db("restaurantdb");
+   var uplaod = {};
+   uplaod["restaurant_id"] =req.body.restaurant_id;
+   
+   console.log(uplaod);
+ 
+ dbo.collection("Restaurant").remove(uplaod, function(err, obj) {
+    if (err) throw err;
+    
+    db.close();
+	
+	checkAuth(res,req);
+	res.status(200);
+   res.redirect('/');	
+	
+  }); 
+});
 });
 
-app.get('/logout',function(req,res) {
-	req.session = null;
-	res.redirect('/');
-});
 
-function checkAuth(res,req){
-	console.log(req.session);
-	if (!req.session.authenticated){
-		res.redirect('/login');
-	}
-}
-
-/* Create Restaurant */
+/* go to Create Restaurant page */
 app.get("/createRestaurant",function(req,res){
 	checkAuth(res,req);
 	res.status(200);
 	res.render('createRestaurant',{});
 });
-/* Query Ceate Restaurant */
+
+
+
+
+/*  Ceate the Restaurant document */
 app.post('/createRestaurant',function(req,res) {
+	
+  MongoClient.connect(url, function(err, db) {
+	 if (err) throw err;
+  var dbo = db.db("restaurantdb");
+  var data={};
+   data['restaurant_id'] = req.body.restaurant_id;
+   data['name'] = req.body.name;
+   data['borough'] = req.body.borough ;
+   data['cuisine'] = req.body.cuisine ;
+   data['photo'] = req.body.photo ;
+   data['photo mimetype'] = req.body.photo_mimetype ;
+   var subdata1 ={};
+       subdata1['street'] = req.body.street ;
+	   subdata1['building'] = req.body.building ;
+	   subdata1['zipcode'] = req.body.zipcode ;
+	   subdata1['coord'] = req.body.coord ;
+   data['address'] = subdata1;
+   data['owner'] = req.session.username;
+  	  console.log(data);
+	  
+ dbo.collection("Restaurant").insert(data, function(err, obj) {
+    if (err) throw err;  
+    db.close();
 	checkAuth(res,req);
-	res.redirect('/');
+	res.status(200);
+	console.log(obj);
+	
+  });
+});
+	
 });
 
 
 
+
+
+/* go to search pgae */
 app.get("/search",function(req,res){
 	checkAuth(res,req);
 	res.status(200);
 	res.render('search',{});
 });
-
 
 /* Query Search */
 app.get('/searchRestaurant',function(req,res) {
@@ -238,14 +278,8 @@ if(req.query.type =="all"){
 	res.status(200);
 	res.render('home',{result:resu, user:req.session.username });	
 	
-  });
-  
-	
+  });	
 }
-
-  
-  
-  
 });
 });
 
