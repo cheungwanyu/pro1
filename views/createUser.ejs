@@ -1,10 +1,29 @@
 <html>
-<body>
-	<form action="/cuser" method="post">
-		Username: <input type="text" name="userId" required><br>
-		Password: <input type="password" name="password" required><br>
-	<input type="submit" value="Create">
-	</form>
-	<a href="/login"><button>Back</button></a>
-</body>
+	<head>
+		<link rel="stylesheet" type="text/css" href="home.css">
+		<title>Sign Up</title>
+	</head>
+	<body>
+		<div class="content">
+			<form action="/createuser" method="post">
+				<table style="width:10em">
+					<tr>
+						<td>Username</td>
+						<td><input type="text" name="userId" required></td>
+					</tr>
+					<tr>
+						<td>Password</td>
+						<td><input type="password" name="password" required></td>
+					</tr>
+					<tr>
+						<td><input type="submit" value="Create User"></td>
+						<td><a href="/">Back</a></td>
+					</tr>
+					<tr>
+					
+					</tr>
+				</table>
+			</form>
+		</div>
+	</body>
 </html>

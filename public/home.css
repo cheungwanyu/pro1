@@ -24,7 +24,8 @@
 
 table {
     border-collapse: collapse;
-    width: 100%;
+    width: 80%;
+	 margin: 0 auto;
 }
 
 th, td {
@@ -37,4 +38,9 @@ tr:nth-child(even){background-color: #f2f2f2}
 th {
     background-color: #4CAF50;
     color: white;
+}
+
+.content{
+	text-align:center;
+	width:100%;
 }

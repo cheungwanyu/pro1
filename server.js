@@ -46,7 +46,7 @@ app.get('/login',function(req,res) {
   /* login the user account*/
 app.post('/login',function(req,res) {
 MongoClient.connect(url, function(err, db) {
-    if (err) throw err;
+    if (err) throw err;
   var dbo = db.db("restaurantdb");
   var Data = req.body;
   dbo.collection("User").findOne(Data, function(err, result) {
@@ -86,7 +86,7 @@ function checkAuth(res,req){
 
 
 /*go to create user page */
-app.get('/createUser',function(req,res) {
+app.get('/createuser',function(req,res) {
 	res.status(200);
 	res.render('createUser',{err:""});
 });
@@ -94,7 +94,7 @@ app.get('/createUser',function(req,res) {
 
 
 /*create user */
-app.post('/cuser',function(req,res) {
+app.post('/createuser',function(req,res) {
 	MongoClient.connect(url, function(err, db) {
 	 if (err) throw err;
   var dbo = db.db("restaurantdb");
