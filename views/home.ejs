@@ -6,12 +6,10 @@
 				width:10%;
 			}
 			table{
-				margin-bottom:1em;
+				margin-bottom:20px;
 			}
 		</style>
-		<script>
-			var mapData = new Array();
-		</script>
+		<title>Home</title>
 	</head>
 	<body>
 		<div class="navigation">
@@ -50,7 +48,7 @@
 					</tr>
 					<% if(result[i].address.coord != ""){ %>
 						<tr>
-							<td colspan="2">
+							<td colspan="2" style="text-align:center">
 								<a href="https://www.google.com.hk/maps/@<%=result[i].address.coord %>" target="_Black">
 								<img src="https://maps.googleapis.com/maps/api/staticmap?center=<%=result[i].address.coord %>&zoom=14&size=600x200&key=AIzaSyAFVdqUK9UIT1qzI_jgStmiDKOfIVCkucs"/>
 								</a>
