@@ -9,10 +9,9 @@
         "ejs": "*",
         "express": "*",
         "express-mongo-db": "^2.0.4",
-        "formidable": "^1.2.1",
+        "formidable": "*",
         "mongodb": "*",
-        "cookie-parser": "*",
-        "formidable": "*"
+        "cookie-parser": "*"
     },
     "engine": "node >= 0.10.0",
     "scripts": {
