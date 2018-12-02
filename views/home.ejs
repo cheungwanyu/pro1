@@ -9,6 +9,9 @@
 				margin-bottom:1em;
 			}
 		</style>
+		<script>
+			var mapData = new Array();
+		</script>
 	</head>
 	<body>
 		<div class="navigation">
@@ -32,7 +35,9 @@
 					</tr>
 					<tr>
 						<td colspan="2" style="text-align:center;">
+							<!--
 							<img src="<%=result[i].photo %>" height="150" width="200"></img>
+							-->
 						</td>
 					</tr>
 					<tr>
@@ -42,6 +47,17 @@
 					<tr>
 						<td class="col">Cuisine</td>
 						<td><%=result[i].cuisine %></td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<div id="map<%=i %>" style="height:20em"></div>
+							<script>
+								mapData[<%=i %>] = new Array();
+								mapData[<%=i %>]["street"] = "<%=result[i].address.street %>";
+								mapData[<%=i %>]["building"] = "<%=result[i].address.building %>";
+								mapData[<%=i %>]["zipcode"] = "<%=result[i].address.zipcode %>";
+							</script>
+						</td>
 					</tr>
 					<tr>
 						<td class="col">Street</td>
@@ -106,8 +122,21 @@
 				<%}%>
 				</table>
 				<% } %>
-			
+			<script>
+				function initMap() {
+				var map = new Array();
+				var geocoder = new Array();
+					for(i=0;i<mapData.length;i++){
+						console.log(mapData[i]);
+						map[i] = new google.maps.Map(document.getElementById('map'+i), {
+							center: {lat: -25.363, lng: 131.044},
+							zoom: 4
+						});
+					}	
+				}
+			</script>
+			<!-- Google Map Api -->
+		<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAFVdqUK9UIT1qzI_jgStmiDKOfIVCkucs&callback=initMap"></script>
 		</div>
-
 	</body>
 </html>
