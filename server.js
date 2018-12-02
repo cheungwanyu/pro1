@@ -363,8 +363,31 @@ if(req.query.type =="all"){
 
 /* API Service */
 app.post("/api/restaurant/",function(req,res){
-	var result ="";
-	res.status(200).json(result).end();
+	MongoClient.connect(url, function(err, db) {
+		if (err) throw err;
+		var dbo = db.db("restaurantdb");
+		var check =false;
+		var  restaurantID ;
+		do {  
+			restaurantID = ""+Math.floor(Math.random() * 99999)+ "";
+			dbo.collection("Restaurant").findOne({restaurant_id:restaurantID}, function(err, result) {
+				assert.equal(err, null);
+				if (result !== null) {
+					check =true;
+					console.log(restaurantID);
+				}	  	
+				db.close();	
+			});
+		}while(check)
+
+ 
+		dbo.collection("Restaurant").insert(req.body, function(err, obj) {
+			if (err) throw err;  
+			db.close();
+			var result = {status: ok, _id: obj._id};
+			res.status(200).json(result).end();
+		});
+	});
 });
 
 app.get("/api/restaurant/",function(req,res){
