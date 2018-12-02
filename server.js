@@ -298,6 +298,8 @@ if(req.query.type =="all"){
 });
 
 /* API Service */
-
+app.post("/api/restaurant/:object",function(req,res){
+	
+});
 
 app.listen(app.listen(process.env.PORT || 8099));
