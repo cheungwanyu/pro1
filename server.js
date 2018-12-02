@@ -362,8 +362,14 @@ if(req.query.type =="all"){
 });
 
 /* API Service */
-app.post("/api/restaurant/:object",function(req,res){
-	
+app.post("/api/restaurant/",function(req,res){
+	var result ="";
+	res.status(200).json(result).end();
+});
+
+app.get("/api/restaurant/",function(req,res){
+	var result = "";
+	res.status(200).json(result).end();
 });
 
 app.listen(app.listen(process.env.PORT || 8099));
