@@ -13,42 +13,42 @@
 		</div>
 		<div class="centent">
 			<h1>Edit Restaurant</h1>
-			<form action="/editRest" method="POST">
+			<form action="/createRest" method="POST">
 				<table>
 					<tr>
 						<td>Name</td>
-						<td><input type="text" name="name" required></td>
+						<td><input type="text" name="name" value="<%= result.name%>" required></td>
 					</tr>
 					<tr>
 						<td>Borough</td>
-						<td><input type="text" name="borough"></td>
+						<td><input type="text" name="borough" value="<%= result.borough%>"></td>
 					</tr>
 					<tr>
 						<td>Cuisine</td>
-						<td><input type="text" name="cuisine"></td>
+						<td><input type="text" name="cuisine" value="<%= result.cuisine%>"></td>
 					</tr>
 					<tr>
-						<td colspan="2" align="center">Address</td>
+						<td colspan="2" align="center" >Address</td>
 					</tr>
 					<tr>
 						<td>Street</td>
-						<td><input type="text" name="street"></td>
+						<td><input type="text" name="street" value="<%= result.address.street%>"></td>
 					</tr>
 					<tr>
 						<td>Building</td>
-						<td><input type="text" name="building"></td>
+						<td><input type="text" name="building" value="<%= result.address.building%>"></td>
 					</tr>
 					<tr>
 						<td>Zipcode</td>
-						<td><input type="text" name="zipcode"></td>
+						<td><input type="text" name="zipcode" value="<%= result.address.zipcode%>"></td>
 					</tr>
 					<tr>
 						<td>Coord</td>
-						<td><input type="text" name="coord"></td>
+						<td><input type="text" name="coord" value="<%= result.address.coord%>"></td>
 					</tr>
 					<tr>
 						<td>Photo</td>
-						<td><input type="file" name="photo"></td>
+						<td><input type="file" name="photo" ></td>
 					</tr>
 					<tr>
 						<td rowspan="2"><input type="submit"></td>

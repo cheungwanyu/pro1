@@ -248,20 +248,31 @@ app.post('/createRest',function(req,res) {
 
 
 /* go to Edit Restaurant page */
+
 app.get("/edit",function(req,res){
+
+MongoClient.connect(url, function(err, db) {
+  if (err) throw err;
+  var dbo = db.db("restaurantdb");
+  dbo.collection("Restaurant").find().toArray(function(err, resu) {
+    if (err) throw err;
+    console.log(resu);
+    db.close();
+	
 	checkAuth(res,req);
 	res.status(200);
-	res.render('editRestaurant',{err:""});
+	res.render('eRestaurant',{result:resu[0] });
+	
+  });
 });
 
-app.get("/editRestaurant",function(req,res){
-	checkAuth(res,req);
-	res.status(200);
-	res.render('editRestaurant',{err:""});
+		
 });
 
 
-/*  Ceate the Restaurant document */
+
+
+/*  Create the Restaurant document */
 app.post('/editRest',function(req,res) {
 
 	
