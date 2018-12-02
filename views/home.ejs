@@ -31,11 +31,13 @@
 					<tr>
 						<td colspan="2"><h1><%=result[i].name %></h1></td>
 					</tr>
+					<%if(result[i].photo!=""){%>
 					<tr>
 						<td colspan="2" style="text-align:center;">
 							<img src="data:image/png;base64, <%= result[i].photo%>" height="300" width="800">
 						</td>
 					</tr>
+					<%}%>
 					<tr>
 						<td class="col">Borough</td>
 						<td><%=result[i].borough %></td>
