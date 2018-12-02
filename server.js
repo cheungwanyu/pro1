@@ -220,6 +220,7 @@ app.post('/createRestaurant',function(req,res) {
    data['owner'] = req.session.username;
   	  console.log(data);
 	  
+	  /*
  dbo.collection("Restaurant").insert(data, function(err, obj) {
     if (err) throw err;  
     db.close();
@@ -227,7 +228,7 @@ app.post('/createRestaurant',function(req,res) {
 	res.status(200);
 	console.log(obj);
 	
-  });
+  }); */
 });
 	
 });
