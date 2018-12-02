@@ -28,11 +28,9 @@ app.use(session({
 
 
 
-/* create User */
-app.get("/createUser",function(req,res){
-	checkAuth(res,req);
+app.get('/createUser',function(req,res) {
 	res.status(200);
-	res.render('createUser',{});
+	res.render('createUser',{err:""});
 });
 
 
@@ -178,32 +176,47 @@ app.post('/createRestaurant',function(req,res) {
 });
 
 
-/* Search 
+
 app.get("/search",function(req,res){
 	checkAuth(res,req);
 	res.status(200);
 	res.render('search',{});
 });
- */
+
 
 /* Query Search */
-app.get('/search',function(req,res) {
+app.get('/searchRestaurant',function(req,res) {
 	MongoClient.connect(url, function(err, db) {
   if (err) throw err;
   var dbo = db.db("restaurantdb");
-  dbo.collection("Restaurant").find().toArray(function(err, resu) {
+
+
+ /*
+var data = "{"+req.query.type+":/"+req.query.keyword+"/}";
+	  console.log(data); */
+
+var data = req.query.keyword
+if(req.query.type =="all"){
+
+  	
+	
+}else{
+	  dbo.collection("Restaurant").find({[req.query.type]: {$regex: ".*" + data + ".*"}}).toArray(function(err, resu) {
     if (err) throw err;
     console.log(resu);
     db.close();
-	
 	checkAuth(res,req);
 	res.status(200);
-	var keyword =req.body.keyword;
-	var type = req.body.type;
-	
-	res.render('search',{keyword:keyword, type:type });	
+	res.render('home',{result:resu, user:req.session.username });	
 	
   });
+  
+	
+}
+
+  
+  
+  
 });
 });
 

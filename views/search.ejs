@@ -13,7 +13,7 @@
 		</div>
 		<div class="contect">
 			<h1>Search</h1>
-			<form action="/search" method="get">
+			<form action="/searchRestaurant" method="get">
 				<table>
 					<tr>
 						<td>Keyword</td>
@@ -23,6 +23,7 @@
 						<td>Type</td>
 						<td>
 							<select name="type">
+							    <option value="all">All</option>
 								<option value="name">Name</option>
 								<option value="borough">Borough</option>
 								<option value="cuisine">Cuisine</option>
@@ -35,10 +36,5 @@
 				</table>
 			</form>
 		</div>
-		<%  if(keyword!==" "){    %>
-		<div class="result">
-			<h1>You Keyword is <%=keyword %>, Type is <%=type %></h1>
-		</div>
-	    <%}%>
 	</body>
 </html>
