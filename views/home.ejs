@@ -1,6 +1,17 @@
 <html>
 	<head>
 		<link rel="stylesheet" type="text/css" href="home.css">
+		<style>
+			.col{
+				width:10%;
+			}
+			table{
+				margin-bottom:1em;
+			}
+		</style>
+		<script>
+			var mapData = new Array();
+		</script>
 	</head>
 	<body>
 		<div class="navigation">
@@ -14,32 +25,54 @@
 		<div class="content">
 			<table>
 				<tr>
-					<th width="80%"><h1>Restaurant List</h1></th>
+					<th colspan="2"><h1>Restaurant List</h1></th>
 				</tr>
+			</table>
 				<% for(var i=0; i<result.length;i++) { %>
+				<table>
 					<tr>
-						<td>Name: <%=result[i].name %></td>
+						<td><h1><%=result[i].name %></h1></td>
 					</tr>
 					<tr>
-						<td><img src="<%=result[i].photo %>" height="150" width="200"></img></td>
+						<td colspan="2" style="text-align:center;">
+							<!--
+							<img src="<%=result[i].photo %>" height="150" width="200"></img>
+							-->
+						</td>
 					</tr>
 					<tr>
-						<td>Borough: <%=result[i].borough %></td>
+						<td class="col">Borough</td>
+						<td><%=result[i].borough %></td>
 					</tr>
 					<tr>
-						<td>Cuisine: <%=result[i].cuisine %></td>
+						<td class="col">Cuisine</td>
+						<td><%=result[i].cuisine %></td>
 					</tr>
 					<tr>
-						<td>Street: <%=result[i].address.street %></td>
+						<td colspan="2">
+							<div id="map<%=i %>" style="height:20em"></div>
+							<script>
+								mapData[<%=i %>] = new Array();
+								mapData[<%=i %>]["street"] = "<%=result[i].address.street %>";
+								mapData[<%=i %>]["building"] = "<%=result[i].address.building %>";
+								mapData[<%=i %>]["zipcode"] = "<%=result[i].address.zipcode %>";
+							</script>
+						</td>
 					</tr>
 					<tr>
-						<td>Building: <%=result[i].address.building %></td>
+						<td class="col">Street</td>
+						<td><%=result[i].address.street %></td>
 					</tr>
 					<tr>
-						<td>Zipcode: <%=result[i].address.zipcode %></td>
+						<td class="col">Building</td>
+						<td><%=result[i].address.building %></td>
 					</tr>
 					<tr>
-						<td>Grades:</td>
+						<td class="col">Zipcode</td>
+						<td><%=result[i].address.zipcode %></td>
+					</tr>
+					<tr>
+						<td colspan="2">Grades:</td>
 					</tr>
 						<% 
 						var checkUserRate=true;
@@ -48,38 +81,62 @@
 						if(result[i].grades[k].user==user)
 						   checkUserRate= false;
 						%>
-					
 					<tr>
-						<td> <%=k+1%>. <%=result[i].grades[k].user %> [ <%=result[i].grades[k].score %> ]</td>
+						<td style="text-align:right;"><%=k+1%></td>
+						<td><%=result[i].grades[k].user %> [ <%=result[i].grades[k].score %> ]</td>
 					</tr>
 		
 					<%	} %>
 					<tr>
-						<td>Created by: <%=result[i].owner %></td>
+						<td>Created by</td>
+						<td><%=result[i].owner %></td>
 					</tr>
 				
 										
 				<%	if(checkUserRate){%>			
 					 <tr>
-				     <td>
-					  <form action="/rate" method="post">
-					      <input type="hidden" value="<%=result[i].restaurant_id %>" name="restaurant_id">
-						  <input type="number"  name="score" min="1" max="10" value="10" required >
-					      <input type="submit" value="Rate" >	  
-				     </form>
+						<td>Rate</td>
+						<td>
+							<form action="/rate" method="post">
+								<input type="hidden" value="<%=result[i].restaurant_id %>" name="restaurant_id">
+								<input type="number"  name="score" min="1" max="10" value="10" required >
+								<input type="submit" value="Rate" >	  
+							</form>
+						</td>
 					</tr>
 					<%}%>
 				<%	if(result[i].owner==user){%>
-					<tr>		
-					<td><form action="/edit" method="get"><input type="hidden" value="<%=result[i].restaurant_id %>" name="restaurant_id"><input type="submit" value="Edit" ></form>
-					<form action="/cancel" method="post"><input type="hidden" value="<%=result[i].restaurant_id %>" name="restaurant_id"><input type="submit" value="Delete" ></form></td>
+					<tr>
+						<td></td>
+						<td>
+							<form action="/edit" method="get">
+								<input type="hidden" value="<%=result[i].restaurant_id %>" name="restaurant_id">
+								<input type="submit" value="Edit" >
+							</form>
+							<form action="/cancel" method="post">
+								<input type="hidden" value="<%=result[i].restaurant_id %>" name="restaurant_id">
+								<input type="submit" value="Delete" >
+							</form>
+						</td>
 					</tr>
 				<%}%>
-					
-					<tr><td><hr></td></tr>
+				</table>
 				<% } %>
-			</table>
+			<script>
+				function initMap() {
+				var map = new Array();
+				var geocoder = new Array();
+					for(i=0;i<mapData.length;i++){
+						console.log(mapData[i]);
+						map[i] = new google.maps.Map(document.getElementById('map'+i), {
+							center: {lat: -25.363, lng: 131.044},
+							zoom: 4
+						});
+					}	
+				}
+			</script>
+			<!-- Google Map Api -->
+		<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAFVdqUK9UIT1qzI_jgStmiDKOfIVCkucs&callback=initMap"></script>
 		</div>
-
 	</body>
 </html>
