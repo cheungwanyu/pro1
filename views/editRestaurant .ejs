@@ -1,0 +1,60 @@
+<html>
+	<head>
+		<link rel="stylesheet" type="text/css" href="home.css">
+	</head>
+	<body>
+		<div class="navigation">
+			<ul>
+				<li><a href="/">Home</a></li>
+				<li><a href="/createRestaurant">Create Restaurant </a></li>
+				<li><a href="/search">Search</a></li>
+				<li style="float:right"><a href="/logout">Logout</a></li>
+			</ul>
+		</div>
+		<div class="centent">
+			<h1>Edit Restaurant</h1>
+			<form action="/editRest" method="POST">
+				<table>
+					<tr>
+						<td>Name</td>
+						<td><input type="text" name="name" required></td>
+					</tr>
+					<tr>
+						<td>Borough</td>
+						<td><input type="text" name="borough"></td>
+					</tr>
+					<tr>
+						<td>Cuisine</td>
+						<td><input type="text" name="cuisine"></td>
+					</tr>
+					<tr>
+						<td colspan="2" align="center">Address</td>
+					</tr>
+					<tr>
+						<td>Street</td>
+						<td><input type="text" name="street"></td>
+					</tr>
+					<tr>
+						<td>Building</td>
+						<td><input type="text" name="building"></td>
+					</tr>
+					<tr>
+						<td>Zipcode</td>
+						<td><input type="text" name="zipcode"></td>
+					</tr>
+					<tr>
+						<td>Coord</td>
+						<td><input type="text" name="coord"></td>
+					</tr>
+					<tr>
+						<td>Photo</td>
+						<td><input type="file" name="photo"></td>
+					</tr>
+					<tr>
+						<td rowspan="2"><input type="submit"></td>
+					</tr>
+				</table>
+			</form>
+		</div>
+	</body>
+</html>
