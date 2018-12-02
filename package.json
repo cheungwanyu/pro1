@@ -10,7 +10,8 @@
         "express": "*",
         "express-mongo-db": "^2.0.4",
         "mongodb": "*",
-        "cookie-parser": "*"
+        "cookie-parser": "*",
+        "formidable": "*"
     },
     "engine": "node >= 0.10.0",
     "scripts": {

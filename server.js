@@ -3,6 +3,7 @@ var express = require('express');
 var app = express();
 var session = require('cookie-session');
 var bodyParser = require('body-parser');
+var formidable = require('formidable');
 const mongourl = "";
 
 //connect the mongoDB
@@ -223,8 +224,23 @@ app.post('/createRest',function(req,res) {
    data['name'] = req.body.name;
    data['borough'] = req.body.borough ;
    data['cuisine'] = req.body.cuisine ;
-   data['photo'] = req.body.photo ;
-   data['photo mimetype'] = "png" ;
+   
+   /* Upload Photo */
+	var form = new formidable.IncomingForm();
+	form.parse(req, function (err, fields, files) {
+		//console.log(JSON.stringify(files));
+		if (files.photo.size == 0) {
+			console.log("No file");
+			data['photo'] = "";
+		}else{
+			var filename = files.photo.path;
+			//console.log("File Upload :"+filename+ files.photo.type);
+			data['photo mimetype'] = files.photo.type;
+			fs.readFile(filename, function(err,photo) {
+				data['photo'] = new Buffer(photo).toString('base64');
+			});
+		}
+	});
    var subdata1 ={};
        subdata1['street'] = req.body.street ;
 	   subdata1['building'] = req.body.building ;
