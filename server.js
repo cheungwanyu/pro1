@@ -251,7 +251,7 @@ app.post('/createRest',function(req,res) {
 app.get("/edit",function(req,res){
 	checkAuth(res,req);
 	res.status(200);
-	res.render('editRestaurant',{});
+	res.render('editRestaurant',{err:""});
 });
 
 app.get("/editRestaurant",function(req,res){
