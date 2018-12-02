@@ -199,12 +199,8 @@ app.get("/createRestaurant",function(req,res){
 
 
 /*  Ceate the Restaurant document */
-app.post('/createRestaurant',function(req,res) {
-	
-  MongoClient.connect(url, function(err, db) {
-	 if (err) throw err;
-  var dbo = db.db("restaurantdb");
-  var data={};
+app.post('/createRest',function(req,res) {
+	 var data={};
    data['restaurant_id'] = req.body.restaurant_id;
    data['name'] = req.body.name;
    data['borough'] = req.body.borough ;
@@ -218,8 +214,12 @@ app.post('/createRestaurant',function(req,res) {
 	   subdata1['coord'] = req.body.coord ;
    data['address'] = subdata1;
    data['owner'] = req.session.username;
-  	  console.log(data);
+  	  console.log(req.body);
 	  
+	
+  MongoClient.connect(url, function(err, db) {
+	 if (err) throw err;
+  var dbo = db.db("restaurantdb");
 	  /*
  dbo.collection("Restaurant").insert(data, function(err, obj) {
     if (err) throw err;  
