@@ -59,7 +59,10 @@ MongoClient.connect(url, function(err, db) {
 			req.session.username = result.userId;
 			  console.log("result:" + result.userId);
 			  	res.redirect('/');
-		  }		  	
+		  }	else{
+			res.status(200);
+			res.render('login',{err:"User Name or Passsword Wrong!"});
+		  }
     db.close();
 	/* Check if user password wrong 
 	if(req.session.authenticated == true){
