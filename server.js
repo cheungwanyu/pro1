@@ -196,8 +196,6 @@ app.get("/createRestaurant",function(req,res){
 });
 
 
-
-
 /*  Ceate the Restaurant document */
 app.post('/createRest',function(req,res) {
 	 var data={};
@@ -214,8 +212,7 @@ app.post('/createRest',function(req,res) {
 	   subdata1['coord'] = req.body.coord ;
    data['address'] = subdata1;
    data['owner'] = req.session.username;
-  	  console.log(req.body);
-	  
+	   console.log(data);
 	
   MongoClient.connect(url, function(err, db) {
 	 if (err) throw err;
