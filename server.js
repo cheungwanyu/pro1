@@ -206,14 +206,16 @@ app.post('/createRest',function(req,res) {
   var check =false;
   var  restaurantID ;
   do {  
-    restaurantID = Math.floor(Math.random() * 999999) + 1 ;
-    dbo.collection("User").findOne({restaurant_id:[restaurantID]}, function(err, result) {
+    restaurantID = ""+Math.floor(Math.random() * 99999)+ "";
+    dbo.collection("Restaurant").findOne({restaurant_id:restaurantID}, function(err, result) {
 	  assert.equal(err, null);
 	    if (result !== null) {
 		 check =true;
-		 }		  	
+		  console.log(restaurantID);
+		 }	  	
     db.close();	
   });
+  
   }while(check)
 	  
   	 var data={};
@@ -222,18 +224,19 @@ app.post('/createRest',function(req,res) {
    data['borough'] = req.body.borough ;
    data['cuisine'] = req.body.cuisine ;
    data['photo'] = req.body.photo ;
-   data['photo mimetype'] = req.body.photo_mimetype ;
+   data['photo mimetype'] = "png" ;
    var subdata1 ={};
        subdata1['street'] = req.body.street ;
 	   subdata1['building'] = req.body.building ;
 	   subdata1['zipcode'] = req.body.zipcode ;
 	   subdata1['coord'] = req.body.coord ;
    data['address'] = subdata1;
+   data['grades'] = [];
    data['owner'] = req.session.username;
 	   console.log(data);
   
   
-	  /*
+	 
  dbo.collection("Restaurant").insert(data, function(err, obj) {
     if (err) throw err;  
     db.close();
@@ -241,7 +244,7 @@ app.post('/createRest',function(req,res) {
 	res.status(200);
 	console.log(obj);
 	
-  }); */
+  }); 
 });
 	
 });
