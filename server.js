@@ -234,16 +234,13 @@ app.post('/createRest',function(req,res) {
    data['grades'] = [];
    data['owner'] = req.session.username;
 	   console.log(data);
-  
-  
 	 
  dbo.collection("Restaurant").insert(data, function(err, obj) {
     if (err) throw err;  
     db.close();
 	checkAuth(res,req);
 	res.status(200);
-	console.log(obj);
-	
+	 res.redirect('/');
   }); 
 });
 	
