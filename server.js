@@ -3,6 +3,7 @@ var express = require('express');
 var app = express();
 var session = require('cookie-session');
 var bodyParser = require('body-parser');
+var fs = require("fs");
 const mongourl = "";
 
 //connect the mongoDB
@@ -217,14 +218,14 @@ app.post('/createRest',function(req,res) {
   });
   
   }while(check)
-	  
+	
+
+
   	 var data={};
     data['restaurant_id'] = restaurantID;
    data['name'] = req.body.name;
    data['borough'] = req.body.borough ;
    data['cuisine'] = req.body.cuisine ;
-   data['photo'] = req.body.photo ;
-   data['photo mimetype'] = "png" ;
    var subdata1 ={};
        subdata1['street'] = req.body.street ;
 	   subdata1['building'] = req.body.building ;
@@ -233,8 +234,11 @@ app.post('/createRest',function(req,res) {
    data['address'] = subdata1;
    data['grades'] = [];
    data['owner'] = req.session.username;
-	   console.log(data);
+   data["photo_mimetype"] =files.photo.type;
+   data["photo"] ="";
+   	   console.log(data);
 	 
+   
  dbo.collection("Restaurant").insert(data, function(err, obj) {
     if (err) throw err;  
     db.close();
@@ -242,6 +246,8 @@ app.post('/createRest',function(req,res) {
 	res.status(200);
 	 res.redirect('/');
   }); 
+
+
 });
 	
 });
