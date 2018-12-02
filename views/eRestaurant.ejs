@@ -13,11 +13,11 @@
 		</div>
 		<div class="centent">
 			<h1>Edit Restaurant</h1>
-			<form action="/editRest" method="POST">
+			<form action="/createRest" method="POST">
 				<table>
 					<tr>
 						<td>Name</td>
-						<td><input type="text" name="name" required></td>
+						<td><input type="text" name="name" value="<%= result%>" required></td>
 					</tr>
 					<tr>
 						<td>Borough</td>

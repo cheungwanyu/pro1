@@ -248,20 +248,29 @@ app.post('/createRest',function(req,res) {
 
 
 /* go to Edit Restaurant page */
+
 app.get("/edit",function(req,res){
-	checkAuth(res,req);
-	res.status(200);
-	res.render('editRestaurant',{err:""});
+  MongoClient.connect(url, function(err, db) {
+  if (err) throw err;
+  var dbo = db.db("restaurantdb");
+  dbo.collection("Restaurant").find(req.query.restaurant_id).findOne(function(err, resu) {
+    if (err) throw err;
+    db.close();
+	
+
+	
+  });
 });
 
-app.get("/editRestaurant",function(req,res){
 	checkAuth(res,req);
 	res.status(200);
-	res.render('editRestaurant',{err:""});
+	res.render('editRestaurant',{result:"123" });	
 });
 
 
-/*  Ceate the Restaurant document */
+
+
+/*  Create the Restaurant document */
 app.post('/editRest',function(req,res) {
 
 	
