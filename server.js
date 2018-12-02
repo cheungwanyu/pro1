@@ -259,7 +259,7 @@ app.post('/createRest',function(req,res) {
    data['address'] = subdata1;
    data['grades'] = [];
    data['owner'] = req.session.username;
-   data["photo_mimetype"] =req.files.type;
+   data["photo_mimetype"] ="";
    data["photo"] ="";
    	   console.log(data);
 	 
