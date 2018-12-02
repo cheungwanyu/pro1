@@ -395,9 +395,64 @@ app.post("/api/restaurant/",function(req,res){
 	});
 });
 
-app.get("/api/restaurant/",function(req,res){
-	var result = "";
-	res.status(200).json(result).end();
+app.get("/api/restaurant/name/*",function(req,res){
+	MongoClient.connect(url, function(err, db) {
+		if (err) throw err;
+		var criteria = {};
+		var dbo = db.db("restaurantdb");
+		
+		criteria.name = req.url.split("/").pop();
+		var cursor = dbo.collection("Restaurant").find(criteria);
+		var restaurants = [];
+		cursor.each(function(err, doc) {
+			assert.equal(err, null);
+			if (doc != null) {
+				restaurants.push(doc);
+			} else {
+				res.json(restaurants);
+			}
+		});
+	});
+});
+
+app.get("/api/restaurant/borough/*",function(req,res){
+	MongoClient.connect(url, function(err, db) {
+		if (err) throw err;
+		var criteria = {};
+		var dbo = db.db("restaurantdb");
+		
+		criteria.name = req.url.split("/").pop();
+		var cursor = dbo.collection("Restaurant").find(criteria);
+		var restaurants = [];
+		cursor.each(function(err, doc) {
+			assert.equal(err, null);
+			if (doc != null) {
+				restaurants.push(doc);
+			} else {
+				res.json(restaurants);
+			}
+		});
+	});
+});
+
+app.get("/api/restaurant/cuisine/*",function(req,res){
+	MongoClient.connect(url, function(err, db) {
+		if (err) throw err;
+		var criteria = {};
+		var dbo = db.db("restaurantdb");
+		
+		criteria.name = req.url.split("/").pop();
+		var cursor = dbo.collection("Restaurant").find(criteria);
+		var restaurants = [];
+		cursor.each(function(err, doc) {
+			assert.equal(err, null);
+			if (doc != null) {
+				restaurants.push(doc);
+			} else {
+				res.json(restaurants);
+			}
+		});
+	});
 });
 
 app.listen(app.listen(process.env.PORT || 8099));
