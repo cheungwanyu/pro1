@@ -162,14 +162,13 @@ MongoClient.connect(url, function(err, db) {
 			  	res.redirect('/');
 		  }		  	
     db.close();
-	/* Check if user password wrong 
+	 //Check if user password wrong 
 	if(req.session.authenticated == true){
 	
 	}else{
 		res.status(200);
 		res.render('login',{err:"User Name or Passsword Wrong!"});
 	}
-*/
   });
 });
 });

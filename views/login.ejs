@@ -1,11 +1,28 @@
 <html>
-<body>
-	<form action="/login" method="post">
-		Username: <input type="text" name="userId" required><br>
-		Password: <input type="password" name="password" required><br>
-	<input type="submit" value="Login">
-	</form>
-	<a href="/createUser"><button>Sign up</button></a>
-
-</body>
+	<head>
+		<link rel="stylesheet" type="text/css" href="home.css">
+	</head>
+	<body>
+		<div class="content">
+			<form action="/login" method="post">
+				<table style="width:10em">
+					<tr>
+						<td>Username</td>
+						<td><input type="text" name="userId" required></td>
+					</tr>
+					<tr>
+						<td>Password</td>
+						<td><input type="password" name="password" required></td>
+					</tr>
+					<tr>
+						<td><input type="submit" value="Login"></td>
+						<td><a href="/createUser">Sign up</a></td>
+					</tr>
+					<tr>
+						<td colspan="2"><%=err %></td>
+					</tr>
+				</table>
+			</form>
+		</div>
+	</body>
 </html>
