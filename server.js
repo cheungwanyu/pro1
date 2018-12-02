@@ -3,7 +3,8 @@ var express = require('express');
 var app = express();
 var session = require('cookie-session');
 var bodyParser = require('body-parser');
-var fs = require("fs");
+var fs = require('fs');
+var path =require('path');
 const mongourl = "";
 
 //connect the mongoDB
@@ -234,10 +235,11 @@ app.post('/createRest',function(req,res) {
    data['address'] = subdata1;
    data['grades'] = [];
    data['owner'] = req.session.username;
-   data["photo_mimetype"] =files.photo.type;
+   data["photo_mimetype"] =req.files.type;
    data["photo"] ="";
    	   console.log(data);
 	 
+   
    
  dbo.collection("Restaurant").insert(data, function(err, obj) {
     if (err) throw err;  
