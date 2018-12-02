@@ -207,10 +207,11 @@ app.get("/createRestaurant",function(req,res){
 
 /*  Ceate the Restaurant document */
 app.post('/createRest',function(req,res) {
-
 	
-  MongoClient.connect(url, function(err, db) {
-	 if (err) throw err;
+  MongoClient.connect(url, function(err, db) {	
+  
+  
+  if (err) throw err;
   var dbo = db.db("restaurantdb");
   var check =false;
   var  restaurantID ;
@@ -226,55 +227,78 @@ app.post('/createRest',function(req,res) {
   });
   
   }while(check)
+  
+  
+  
+  
+  
 	
+  var formData = req.body;
+  var form = new formidable.IncomingForm();
 
-
-  	 var data={};
-    data['restaurant_id'] = restaurantID;
-   data['name'] = req.body.name;
-   data['borough'] = req.body.borough ;
-   data['cuisine'] = req.body.cuisine ;
    
-   /* Upload Photo */
-	var form = new formidable.IncomingForm();
-	form.parse(req, function (err, fields, files) {
-		//console.log(JSON.stringify(files));
-		if (files.photo.size == 0) {
-			console.log("No file");
-			data['photo'] = "";
-		}else{
-			var filename = files.photo.path;
-			//console.log("File Upload :"+filename+ files.photo.type);
-			data['photo mimetype'] = files.photo.type;
-			fs.readFile(filename, function(err,photo) {
-				data['photo'] = new Buffer(photo).toString('base64');
-			});
-		}
-	});
+   form.parse(req, function(err, fields, files) {
+    console.log(JSON.stringify(files));
+
+
+	 var data={};
+    data['restaurant_id'] = restaurantID;
+   data['name'] = fields.name;
+   data['borough'] = fields.borough ;
+   data['cuisine'] = fields.cuisine ;
    var subdata1 ={};
-       subdata1['street'] = req.body.street ;
-	   subdata1['building'] = req.body.building ;
-	   subdata1['zipcode'] = req.body.zipcode ;
-	   subdata1['coord'] = req.body.coord ;
+       subdata1['street'] = fields.street ;
+	   subdata1['building'] = fields.building ;
+	   subdata1['zipcode'] =fields.zipcode ;
+	   subdata1['coord'] = fields.coord ;
    data['address'] = subdata1;
    data['grades'] = [];
    data['owner'] = req.session.username;
-   data["photo_mimetype"] ="";
-   data["photo"] ="";
-   	   console.log(data);
-	 
    
+
+    if (files.photo.size != 0) {
+      var filename = files.photo.path;
+      data["photo mimetype"] = files.photo.type;
+      fs.readFile(filename, function(err, data1) {
+        assert.equal(err, null);
+        data["photo"] = new Buffer(data1).toString("base64");
+		
+		//因為readFile係async，所以upload statment 等佢read完再做, 所以寫係到
+       
+	var dbo = db.db("restaurantdb");
+  dbo.collection("Restaurant").insertOne(data, function(err, result) {
+    assert.equal(err, null);
+	  res.redirect("/");
+  });
+
+
+		
    
- dbo.collection("Restaurant").insert(data, function(err, obj) {
-    if (err) throw err;  
-    db.close();
-	checkAuth(res,req);
-	res.status(200);
-	 res.redirect('/');
+      });
+    } else {
+   data["photo mimetype"]="";
+   data["photo"]="";
+ 	var dbo = db.db("restaurantdb");
+  dbo.collection("Restaurant").insertOne(data, function(err, result) {
+    assert.equal(err, null);
+	  res.redirect("/");
   }); 
+  
+  
+    }
+  });
+   
 
 
-});
+
+
+
+
+  });
+
+
+
+
 	
 });
 
