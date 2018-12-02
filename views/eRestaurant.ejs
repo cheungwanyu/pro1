@@ -13,7 +13,8 @@
 		</div>
 		<div class="centent">
 			<h1>Edit Restaurant</h1>
-			<form action="/createRest" method="POST">
+			<form action="/editRest" method="POST">
+			    <input type="hidden" name="restaurant_id" value="<%= result.restaurant_id%>" required>
 				<table>
 					<tr>
 						<td>Name</td>
@@ -32,19 +33,19 @@
 					</tr>
 					<tr>
 						<td>Street</td>
-						<td><input type="text" name="street" value="<%= result.address.street%>"></td>
+						<td><input type="text" name="street" value="<%= result.address.street %>"></td>
 					</tr>
 					<tr>
 						<td>Building</td>
-						<td><input type="text" name="building" value="<%= result.address.building%>"></td>
+						<td><input type="text" name="building" value="<%= result.address.building %>"></td>
 					</tr>
 					<tr>
 						<td>Zipcode</td>
-						<td><input type="text" name="zipcode" value="<%= result.address.zipcode%>"></td>
+						<td><input type="text" name="zipcode" value="<%= result.address.zipcode %>"></td>
 					</tr>
 					<tr>
 						<td>Coord</td>
-						<td><input type="text" name="coord" value="<%= result.address.coord%>"></td>
+						<td><input type="text" name="coord" value="<%= result.address.coord %>"></td>
 					</tr>
 					<tr>
 						<td>Photo</td>

@@ -254,48 +254,33 @@ app.get("/edit",function(req,res){
 MongoClient.connect(url, function(err, db) {
   if (err) throw err;
   var dbo = db.db("restaurantdb");
-  dbo.collection("Restaurant").find().toArray(function(err, resu) {
+  var data={};
+  data['restaurant_id'] =""+req.query.restaurant_id+"";
+  dbo.collection("Restaurant").find(data).toArray(function(err, resu) {
     if (err) throw err;
     console.log(resu);
     db.close();
 	
 	checkAuth(res,req);
 	res.status(200);
-	res.render('eRestaurant',{result:resu[0] });
+	res.render('eRestaurant',{result:resu[0]});
 	
   });
+ 
+});	
 });
 
-		
-});
+app.post("/editRest",function(req,res){
 
-
-
-
-/*  Create the Restaurant document */
-app.post('/editRest',function(req,res) {
-
-	
-  MongoClient.connect(url, function(err, db) {
-	 if (err) throw err;
+MongoClient.connect(url, function(err, db) {
+  if (err) throw err;
   var dbo = db.db("restaurantdb");
-  var check =false;
-  var  restaurantID ;
-  do {  
-    restaurantID = ""+Math.floor(Math.random() * 99999)+ "";
-    dbo.collection("Restaurant").findOne({restaurant_id:restaurantID}, function(err, result) {
-	  assert.equal(err, null);
-	    if (result !== null) {
-		 check =true;
-		  console.log(restaurantID);
-		 }	  	
-    db.close();	
-  });
-  
-  }while(check)
-	  
-  	 var data={};
-    data['restaurant_id'] = restaurantID;
+ 
+ 
+ var data1 ={};
+ data1['restaurant_id'] = ""+req.body.restaurant_id+"";
+ 
+ var data={};
    data['name'] = req.body.name;
    data['borough'] = req.body.borough ;
    data['cuisine'] = req.body.cuisine ;
@@ -307,20 +292,29 @@ app.post('/editRest',function(req,res) {
 	   subdata1['zipcode'] = req.body.zipcode ;
 	   subdata1['coord'] = req.body.coord ;
    data['address'] = subdata1;
-   data['grades'] = [];
-   data['owner'] = req.session.username;
 	   console.log(data);
-	 
- dbo.collection("Restaurant").insert(data, function(err, obj) {
-    if (err) throw err;  
+ 
+ 
+  
+ dbo.collection("Restaurant").update( data1,{$set: data}, function(err, obj) {
+    if (err) throw err;
+    
     db.close();
+	
 	checkAuth(res,req);
 	res.status(200);
-	 res.redirect('/');
-  }); 
-});
+   res.redirect('/');	
 	
+  }); 
+  
+  
+ 
+});	
 });
+
+
+
+
 
 
 
