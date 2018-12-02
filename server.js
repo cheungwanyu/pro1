@@ -398,11 +398,11 @@ app.post("/api/restaurant/",function(req,res){
 app.get("/api/restaurant/name/*",function(req,res){
 	MongoClient.connect(url, function(err, db) {
 		if (err) throw err;
-		var criteria = {};
+		
 		var dbo = db.db("restaurantdb");
 		
-		criteria.name = req.url.split("/").pop();
-		var cursor = dbo.collection("Restaurant").find(criteria);
+		var name = req.url.split("/").pop();
+		var cursor = dbo.collection("Restaurant").find({"name" : name});
 		var restaurants = [];
 		cursor.each(function(err, doc) {
 			assert.equal(err, null);
@@ -421,8 +421,8 @@ app.get("/api/restaurant/borough/*",function(req,res){
 		var criteria = {};
 		var dbo = db.db("restaurantdb");
 		
-		criteria.name = req.url.split("/").pop();
-		var cursor = dbo.collection("Restaurant").find(criteria);
+		var borugh = req.url.split("/").pop();
+		var cursor = dbo.collection("Restaurant").find({"borugh" : borugh});
 		var restaurants = [];
 		cursor.each(function(err, doc) {
 			assert.equal(err, null);
@@ -441,8 +441,8 @@ app.get("/api/restaurant/cuisine/*",function(req,res){
 		var criteria = {};
 		var dbo = db.db("restaurantdb");
 		
-		criteria.name = req.url.split("/").pop();
-		var cursor = dbo.collection("Restaurant").find(criteria);
+		var cuisine = req.url.split("/").pop();
+		var cursor = dbo.collection("Restaurant").find({"cuisine" : cuisine});
 		var restaurants = [];
 		cursor.each(function(err, doc) {
 			assert.equal(err, null);
