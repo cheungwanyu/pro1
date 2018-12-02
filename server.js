@@ -3,13 +3,12 @@ var express = require('express');
 var app = express();
 var session = require('cookie-session');
 var bodyParser = require('body-parser');
-<<<<<<< HEAD
 var fs = require('fs');
 var path =require('path');
-=======
+
 var formidable = require('formidable');
 var fs = require("fs");
->>>>>>> b9035e86a7a3e0e4a6f19118dcb25e6f2dfaec2a
+
 const mongourl = "";
 
 //connect the mongoDB
