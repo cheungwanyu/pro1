@@ -3,8 +3,13 @@ var express = require('express');
 var app = express();
 var session = require('cookie-session');
 var bodyParser = require('body-parser');
+<<<<<<< HEAD
 var fs = require('fs');
 var path =require('path');
+=======
+var formidable = require('formidable');
+var fs = require("fs");
+>>>>>>> b9035e86a7a3e0e4a6f19118dcb25e6f2dfaec2a
 const mongourl = "";
 
 //connect the mongoDB
@@ -227,6 +232,23 @@ app.post('/createRest',function(req,res) {
    data['name'] = req.body.name;
    data['borough'] = req.body.borough ;
    data['cuisine'] = req.body.cuisine ;
+   
+   /* Upload Photo */
+	var form = new formidable.IncomingForm();
+	form.parse(req, function (err, fields, files) {
+		//console.log(JSON.stringify(files));
+		if (files.photo.size == 0) {
+			console.log("No file");
+			data['photo'] = "";
+		}else{
+			var filename = files.photo.path;
+			//console.log("File Upload :"+filename+ files.photo.type);
+			data['photo mimetype'] = files.photo.type;
+			fs.readFile(filename, function(err,photo) {
+				data['photo'] = new Buffer(photo).toString('base64');
+			});
+		}
+	});
    var subdata1 ={};
        subdata1['street'] = req.body.street ;
 	   subdata1['building'] = req.body.building ;
@@ -406,11 +428,11 @@ app.post("/api/restaurant/",function(req,res){
 app.get("/api/restaurant/name/*",function(req,res){
 	MongoClient.connect(url, function(err, db) {
 		if (err) throw err;
-		var criteria = {};
+		
 		var dbo = db.db("restaurantdb");
 		
-		criteria.name = req.url.split("/").pop();
-		var cursor = dbo.collection("Restaurant").find(criteria);
+		var name = req.url.split("/").pop();
+		var cursor = dbo.collection("Restaurant").find({"name" : name});
 		var restaurants = [];
 		cursor.each(function(err, doc) {
 			assert.equal(err, null);
@@ -429,8 +451,8 @@ app.get("/api/restaurant/borough/*",function(req,res){
 		var criteria = {};
 		var dbo = db.db("restaurantdb");
 		
-		criteria.name = req.url.split("/").pop();
-		var cursor = dbo.collection("Restaurant").find(criteria);
+		var borugh = req.url.split("/").pop();
+		var cursor = dbo.collection("Restaurant").find({"borugh" : borugh});
 		var restaurants = [];
 		cursor.each(function(err, doc) {
 			assert.equal(err, null);
@@ -449,8 +471,8 @@ app.get("/api/restaurant/cuisine/*",function(req,res){
 		var criteria = {};
 		var dbo = db.db("restaurantdb");
 		
-		criteria.name = req.url.split("/").pop();
-		var cursor = dbo.collection("Restaurant").find(criteria);
+		var cuisine = req.url.split("/").pop();
+		var cursor = dbo.collection("Restaurant").find({"cuisine" : cuisine});
 		var restaurants = [];
 		cursor.each(function(err, doc) {
 			assert.equal(err, null);
