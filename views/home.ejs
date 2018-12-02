@@ -48,17 +48,15 @@
 						<td class="col">Cuisine</td>
 						<td><%=result[i].cuisine %></td>
 					</tr>
-					<tr>
-						<td colspan="2">
-							<div id="map<%=i %>" style="height:20em"></div>
-							<script>
-								mapData[<%=i %>] = new Array();
-								mapData[<%=i %>]["street"] = "<%=result[i].address.street %>";
-								mapData[<%=i %>]["building"] = "<%=result[i].address.building %>";
-								mapData[<%=i %>]["zipcode"] = "<%=result[i].address.zipcode %>";
-							</script>
-						</td>
-					</tr>
+					<% if(result[i].address.coord != ""){ %>
+						<tr>
+							<td colspan="2">
+								<a href="https://www.google.com.hk/maps/@<%=result[i].address.coord %>" target="_Black">
+								<img src="https://maps.googleapis.com/maps/api/staticmap?center=<%=result[i].address.coord %>&zoom=14&size=600x200&key=AIzaSyAFVdqUK9UIT1qzI_jgStmiDKOfIVCkucs"/>
+								</a>
+							</td>
+						</tr>
+					<% } %>
 					<tr>
 						<td class="col">Street</td>
 						<td><%=result[i].address.street %></td>
@@ -122,21 +120,7 @@
 				<%}%>
 				</table>
 				<% } %>
-			<script>
-				function initMap() {
-				var map = new Array();
-				var geocoder = new Array();
-					for(i=0;i<mapData.length;i++){
-						console.log(mapData[i]);
-						map[i] = new google.maps.Map(document.getElementById('map'+i), {
-							center: {lat: -25.363, lng: 131.044},
-							zoom: 4
-						});
-					}	
-				}
-			</script>
-			<!-- Google Map Api -->
-		<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAFVdqUK9UIT1qzI_jgStmiDKOfIVCkucs&callback=initMap"></script>
+			
 		</div>
 	</body>
 </html>
