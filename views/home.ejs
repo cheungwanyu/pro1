@@ -44,15 +44,6 @@
 						<td class="col">Cuisine</td>
 						<td><%=result[i].cuisine %></td>
 					</tr>
-					<% if(result[i].address.coord != ""){ %>
-						<tr>
-							<td colspan="2" style="text-align:center">
-								<a href="https://www.google.com.hk/maps/@<%=result[i].address.coord %>" target="_Black">
-								<img src="https://maps.googleapis.com/maps/api/staticmap?center=<%=result[i].address.coord %>&zoom=14&size=600x200&key=AIzaSyAFVdqUK9UIT1qzI_jgStmiDKOfIVCkucs"/>
-								</a>
-							</td>
-						</tr>
-					<% } %>
 					<tr>
 						<td class="col">Street</td>
 						<td><%=result[i].address.street %></td>
@@ -81,6 +72,18 @@
 					</tr>
 		
 					<%	} %>
+					
+					<% if(result[i].address.coord != ""){ %>
+						<tr>
+						    <td class="col">GPS</td>
+							<td >
+                                    <div class="item" style="cursor: pointer;" onclick="window.open('/map?lat=<%=  result[i].address.coord.latitude%>&lon=<%=  result[i].address.coord.longitude %>&zoom=18','mywindow');">
+									[   <%= result[i].address.coord.latitude %>,<%= result[i].address.coord.longitude %>] </div>
+							</td>
+						</tr>
+					<% } %>
+					
+					
 					<tr>
 						<td>Created by</td>
 						<td><%=result[i].owner %></td>
@@ -113,6 +116,7 @@
 								<input type="submit" value="Delete" >
 							</form>
 						</td>
+						
 					</tr>
 				<%}%>
 				</table>

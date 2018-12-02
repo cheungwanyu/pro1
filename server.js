@@ -247,7 +247,10 @@ app.post('/createRest',function(req,res) {
        subdata1['street'] = fields.street ;
 	   subdata1['building'] = fields.building ;
 	   subdata1['zipcode'] =fields.zipcode ;
-	   subdata1['coord'] = fields.coord ;
+	  	   var subdata2 ={};
+	       subdata2['latitude'] = fields.latitude;
+		   subdata2['longitude'] = fields.longitude;
+	   subdata1['coord'] = subdata2 ;
    data['address'] = subdata1;
    data['grades'] = [];
    data['owner'] = req.session.username;
@@ -338,8 +341,13 @@ MongoClient.connect(url, function(err, db) {
    var subdata1 ={};
        subdata1['street'] = fields.street ;
 	   subdata1['building'] = fields.building ;
-	   subdata1['zipcode'] =fields.zipcode ;
-	   subdata1['coord'] = fields.coord ;
+	   subdata1['zipcode'] = fields.zipcode ;
+	   var subdata2 ={};
+	     subdata2['latitude'] = fields.latitude;
+		 subdata2['longitude'] = fields.longitude;
+	   subdata1['coord'] = subdata2 ;
+	   
+	   
    data['address'] = subdata1;
 
     if (files.photo.size != 0) {
@@ -463,6 +471,27 @@ if(req.query.type =="all"){
 }
 });
 });
+
+
+/* google map */
+ app.get("/map", function(req, res, next) {
+  res.render("googlemap", {
+    lat: " 22.3989588",
+    lon: "113.9756416",
+    zoom: req.query.zoom
+  });
+});
+
+
+function pushRate(db, filter, data, callback) {
+  db.collection("Restaurants").updateOne(filter, data, function(err, res) {
+    assert.equal(err, null);
+    console.log("push was successful!");
+    callback(true);
+  });
+}
+
+
 
 /* API Service */
 app.post("/api/restaurant/",function(req,res){
