@@ -247,6 +247,70 @@ app.post('/createRest',function(req,res) {
 });
 
 
+/* go to Edit Restaurant page */
+app.get("/edit",function(req,res){
+	checkAuth(res,req);
+	res.status(200);
+	res.render('editRestaurant',{});
+});
+
+app.get("/editRestaurant",function(req,res){
+	checkAuth(res,req);
+	res.status(200);
+	res.render('editRestaurant',{err:""});
+});
+
+
+/*  Ceate the Restaurant document */
+app.post('/editRest',function(req,res) {
+
+	
+  MongoClient.connect(url, function(err, db) {
+	 if (err) throw err;
+  var dbo = db.db("restaurantdb");
+  var check =false;
+  var  restaurantID ;
+  do {  
+    restaurantID = ""+Math.floor(Math.random() * 99999)+ "";
+    dbo.collection("Restaurant").findOne({restaurant_id:restaurantID}, function(err, result) {
+	  assert.equal(err, null);
+	    if (result !== null) {
+		 check =true;
+		  console.log(restaurantID);
+		 }	  	
+    db.close();	
+  });
+  
+  }while(check)
+	  
+  	 var data={};
+    data['restaurant_id'] = restaurantID;
+   data['name'] = req.body.name;
+   data['borough'] = req.body.borough ;
+   data['cuisine'] = req.body.cuisine ;
+   data['photo'] = req.body.photo ;
+   data['photo mimetype'] = "png" ;
+   var subdata1 ={};
+       subdata1['street'] = req.body.street ;
+	   subdata1['building'] = req.body.building ;
+	   subdata1['zipcode'] = req.body.zipcode ;
+	   subdata1['coord'] = req.body.coord ;
+   data['address'] = subdata1;
+   data['grades'] = [];
+   data['owner'] = req.session.username;
+	   console.log(data);
+	 
+ dbo.collection("Restaurant").insert(data, function(err, obj) {
+    if (err) throw err;  
+    db.close();
+	checkAuth(res,req);
+	res.status(200);
+	 res.redirect('/');
+  }); 
+});
+	
+});
+
 
 
 
