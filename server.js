@@ -228,10 +228,7 @@ app.post('/createRest',function(req,res) {
   
   }while(check)
   
-  
-  
-  
-  
+ 
 	
   var formData = req.body;
   var form = new formidable.IncomingForm();
@@ -283,17 +280,9 @@ app.post('/createRest',function(req,res) {
     assert.equal(err, null);
 	  res.redirect("/");
   }); 
-  
-  
+ 
     }
   });
-   
-
-
-
-
-
-
   });
 
 
@@ -333,26 +322,38 @@ MongoClient.connect(url, function(err, db) {
   var dbo = db.db("restaurantdb");
  
  
- var data1 ={};
- data1['restaurant_id'] = ""+req.body.restaurant_id+"";
- 
- var data={};
-   data['name'] = req.body.name;
-   data['borough'] = req.body.borough ;
-   data['cuisine'] = req.body.cuisine ;
-   data['photo'] = req.body.photo ;
-   data['photo mimetype'] = "png" ;
+  	
+  var formData = req.body;
+  var form = new formidable.IncomingForm();
+
+   
+   form.parse(req, function(err, fields, files) {
+    console.log(JSON.stringify(files));
+
+
+	 var data={};
+   var  filter={};
+   filter['restaurant_id'] = ""+fields.restaurant_id+"";
+   data['name'] = fields.name;
+   data['borough'] = fields.borough ;
+   data['cuisine'] = fields.cuisine ;
    var subdata1 ={};
-       subdata1['street'] = req.body.street ;
-	   subdata1['building'] = req.body.building ;
-	   subdata1['zipcode'] = req.body.zipcode ;
-	   subdata1['coord'] = req.body.coord ;
+       subdata1['street'] = fields.street ;
+	   subdata1['building'] = fields.building ;
+	   subdata1['zipcode'] =fields.zipcode ;
+	   subdata1['coord'] = fields.coord ;
    data['address'] = subdata1;
-	   console.log(data);
- 
- 
+
+    if (files.photo.size != 0) {
+      var filename = files.photo.path;
+      data["photo mimetype"] = files.photo.type;
+      fs.readFile(filename, function(err, data1) {
+        assert.equal(err, null);
+        data["photo"] = new Buffer(data1).toString("base64");
+		
+		//因為readFile係async，所以upload statment 等佢read完再做, 所以寫係到
   
- dbo.collection("Restaurant").update( data1,{$set: data}, function(err, obj) {
+ dbo.collection("Restaurant").update( filter,{$set: data}, function(err, obj) {
     if (err) throw err;
     
     db.close();
@@ -362,6 +363,50 @@ MongoClient.connect(url, function(err, db) {
    res.redirect('/');	
 	
   }); 
+  
+
+
+
+
+
+
+      });
+    } else {
+ dbo.collection("Restaurant").update( filter,{$set: data}, function(err, obj) {
+    if (err) throw err;
+    
+    db.close();
+	
+	checkAuth(res,req);
+	res.status(200);
+   res.redirect('/');	
+	
+  }); 
+    }
+  });
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   
   
  
