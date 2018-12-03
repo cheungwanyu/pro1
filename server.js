@@ -256,33 +256,64 @@ app.post('/createRest',function(req,res) {
    data['owner'] = req.session.username;
    
 
-    if (files.photo.size != 0) {
+	
+	
+	    if (files.photo.size != 0) {
       var filename = files.photo.path;
       data["photo mimetype"] = files.photo.type;
       fs.readFile(filename, function(err, data1) {
         assert.equal(err, null);
         data["photo"] = new Buffer(data1).toString("base64");
-       
-	var dbo = db.db("restaurantdb");
-  dbo.collection("Restaurant").insertOne(data, function(err, result) {
-    assert.equal(err, null);
-	  res.redirect("/");
-  });
-
-
 		
-   
+  
+ dbo.collection("Restaurant").insertOne( data, function(err, obj) {
+    if (err) throw err;
+    
+    db.close();
+	
+	checkAuth(res,req);
+	res.status(200);
+   res.redirect('/');	
+	
+  }); 
+  
+
+
+
+
+
+
       });
     } else {
-   data["photo mimetype"]="";
-   data["photo"]="";
- 	var dbo = db.db("restaurantdb");
-  dbo.collection("Restaurant").insertOne(data, function(err, result) {
-    assert.equal(err, null);
-	  res.redirect("/");
+ dbo.collection("Restaurant").insertOne( data, function(err, obj) {
+    if (err) throw err;
+    
+    db.close();
+	
+	checkAuth(res,req);
+	res.status(200);
+   res.redirect('/');	
+	
   }); 
- 
     }
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
   });
   });
 
@@ -388,6 +419,12 @@ MongoClient.connect(url, function(err, db) {
 	
   }); 
     }
+	
+	
+	
+	
+	
+	
   });
   
   
