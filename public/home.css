@@ -22,6 +22,11 @@
     background-color: #111;
 }
 
+.active {
+    background-color: #4CAF50;
+    color: white;
+}
+
 table {
     border-collapse: collapse;
     width: 80%;
