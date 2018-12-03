@@ -82,8 +82,8 @@
 						<tr>
 						    <td class="col">GPS</td>
 							<td >
-                                    <div class="item" style="cursor: pointer;" onclick="window.open('/map?lat=<%=  result[i].address.coord.latitude%>&lon=<%=  result[i].address.coord.longitude %>&zoom=18','mywindow');">
-									[   <%= result[i].address.coord.latitude %>,<%= result[i].address.coord.longitude %>] </div>
+                                    <a href="/map?lat=<%=  result[i].address.coord.latitude%>&lon=<%=  result[i].address.coord.longitude %>" target="_black">
+									[   <%= result[i].address.coord.latitude %>,<%= result[i].address.coord.longitude %>]</a>
 							</td>
 						</tr>
 					<% } %>

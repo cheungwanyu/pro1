@@ -475,9 +475,10 @@ if(req.query.type =="all"){
 
 /* google map */
  app.get("/map", function(req, res, next) {
+	 console.log(req.body);
   res.render("googlemap", {
-    lat: " 22.3989588",
-    lon: "113.9756416",
+    lat: req.query.lat,
+    lon: req.query.lon,
     zoom: req.query.zoom
   });
 });
@@ -549,7 +550,7 @@ app.get("/api/restaurant/borough/*",function(req,res){
 		var dbo = db.db("restaurantdb");
 		
 		var borugh = req.url.split("/").pop();
-		var cursor = dbo.collection("Restaurant").find({"borugh" : borugh});
+		var cursor = dbo.collection("Restaurant").find({"borough" : borugh});
 		var restaurants = [];
 		cursor.each(function(err, doc) {
 			assert.equal(err, null);

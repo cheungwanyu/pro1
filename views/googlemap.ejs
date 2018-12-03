@@ -20,31 +20,9 @@
       }
     </style>
 	
-	
+	<meta http-equiv="refresh" content="0; url=https://maps.google.com/maps?q=<%=lon %>,<%=lat %>" />
 	
   </head>
   <body>
-    <div id="map"></div>
-	
-    <script>
-      function initMap() {
-        var myLatLng = {lat: <%= lat %>, lng: <%= lon%>};
-        var map = new google.maps.Map(document.getElementById('map'), {
-          zoom: <%= zoom%>,
-          center: myLatLng
-        });
-        var marker = new google.maps.Marker({
-          position: myLatLng,
-          map: map,
-          title: 'Hello World!'
-        });
-      }
-    </script>
-	
-	
-	
-    <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAFVdqUK9UIT1qzI_jgStmiDKOfIVCkucs&callback=initMap">
-    </script>
   </body>
 </html>
