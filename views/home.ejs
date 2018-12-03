@@ -7,6 +7,7 @@
 			}
 			table{
 				margin-bottom:20px;
+				margin-top:20px;
 			}
 		</style>
 		<title>Home</title>
@@ -23,11 +24,13 @@
 		<div class="content">
 			<table>
 				<tr>
-					<th colspan="2"><h1>Restaurant List</h1></th>
+					<th colspan="2" style="font-size:50">Restaurant List</th>
 				</tr>
 			</table>
 				<% for(var i=0; i<result.length;i++) { %>
 				<table>
+					<col width="10%">
+					<col width="80%">
 					<tr>
 						<td colspan="2"><h1><%=result[i].name %></h1></td>
 					</tr>
