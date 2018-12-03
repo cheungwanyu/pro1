@@ -89,6 +89,7 @@ function checkAuth(res,req){
 	console.log(req.session);
 	if (!req.session.authenticated) {
 		res.redirect('/login');
+		return false;
 	}
 }
 
@@ -126,20 +127,20 @@ app.post('/createuser',function(req,res) {
 
 /* View the restaurant list*/
 app.get('/',function(req,res) {
-	MongoClient.connect(url, function(err, db) {
-  if (err) throw err;
-  var dbo = db.db("restaurantdb");
-  dbo.collection("Restaurant").find().toArray(function(err, resu) {
-    if (err) throw err;
-    console.log(resu);
-    db.close();
-	
-	checkAuth(res,req);
-	res.status(200);
-	res.render('home',{result:resu, user:req.session.username });	
-	
-  });
-});
+	if(checkAuth(res,req)){
+		MongoClient.connect(url, function(err, db) {
+			if (err) throw err;
+			var dbo = db.db("restaurantdb");
+			dbo.collection("Restaurant").find().toArray(function(err, resu) {
+				if (err) throw err;
+				console.log(resu);
+				db.close();
+				res.status(200);
+				res.render('home',{result:resu, user:req.session.username });	
+			
+			});
+		});
+	}
 });
 
 /* rate restaurant */
