@@ -287,7 +287,8 @@ app.post('/createRest',function(req,res) {
     } else {
  dbo.collection("Restaurant").insertOne( data, function(err, obj) {
     if (err) throw err;
-    
+       data["photo mimetype"] ="";
+	    data["photo"]="";
     db.close();
 	
 	checkAuth(res,req);
